@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.22.2",
+    "@react-navigation/bottom-tabs": "^6.5.14",
     "@react-navigation/native": "^6.1.12",
     "@react-navigation/native-stack": "^6.9.20",
     "expo": "^49.0.23",

@@ -1,11 +1,13 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase';
 
-export const LoginScreen = () => {
+export const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    // console.log(auth)
 
     const handleLogin = async () => {
         try {
@@ -15,6 +17,7 @@ export const LoginScreen = () => {
                 password
             );
             console.log('Usuario logueado con éxito:', userCredential.user);
+            navigation.navigate('Home')
         } catch (error) {
             console.error('Error al loguear el usuario:', error);
             alert(error.message);
@@ -42,7 +45,11 @@ export const LoginScreen = () => {
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.buttonText}>Go to Settings</Text>
+            </TouchableOpacity>
         </KeyboardAvoidingView>
+        
     );
 };
 

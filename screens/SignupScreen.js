@@ -1,9 +1,9 @@
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase';
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-export const SignupScreen = () => {
+export const SignupScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -15,6 +15,7 @@ export const SignupScreen = () => {
                 password
             )
             console.log('Usuario registrado con éxito:', userCredential.user);
+            navigation.navigate('Login')
         } catch (error) {
             console.error('Error al registrar el usuario:', error)
             alert(error.message);
