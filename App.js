@@ -11,6 +11,9 @@ import { TamaguiProvider } from '@tamagui/core'
 import { useFonts } from "expo-font";
 import config from './tamagui.config';
 
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+const queryClient = new QueryClient()
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,10 +48,12 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <TamaguiProvider config={config}>
-        <MyStack />
-      </TamaguiProvider>
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
+        <TamaguiProvider config={config}>
+          <MyStack />
+        </TamaguiProvider>
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }

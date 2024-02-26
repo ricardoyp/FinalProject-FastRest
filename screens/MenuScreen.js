@@ -1,25 +1,43 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { getCollection } from "../API";
-import { useEffect } from "react";
+import { getCollectionAppetizers } from "../API";
+import { useQuery } from "@tanstack/react-query";
+import { Button, Card, H2, Image, Paragraph, ScrollView, XStack } from "tamagui";
 
 export const MenuScreen = ({ navigation }) => {
 
-    let menu = [];
-
-    useEffect(() => {
-        menu = getCollection('menu');
-    }
-        , []);
-
-    menu.map((item, index) => {
-        console.log(item);
+    const { data: appetizers, isLoading: isLoadingGet } = useQuery({
+        queryKey: ['allAppetizers'],
+        queryFn: getCollectionAppetizers
     });
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
-                <Text style={styles.buttonText}>Go to Settings</Text>
-            </TouchableOpacity>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', padding: 5 }}>Appetizers</Text>
+            <ScrollView>
+                <XStack gap="$3">
+                    {appetizers?.map((appetizer, index) => {
+                        return (
+                            <Card key={index} elevate size="$2" bordered width={250}>
+                                <Card.Header padded>
+                                    <H2>{appetizer.name}</H2>
+                                    <Paragraph theme="alt2">{appetizer.description}</Paragraph>
+                                </Card.Header>
+                                <Card.Footer padded>
+                                    <XStack flex={1} />
+                                    <Button borderRadius="$10">Purchase</Button>
+                                </Card.Footer>
+                                <Card.Background>
+                                    <Image
+                                        resizeMode="contain"
+                                        alignSelf="center"
+                                        source={appetizer.image}
+                                    />
+                                </Card.Background>
+                            </Card>
+                        );
+                    })}
+                </XStack>
+            </ScrollView>
         </View>
     );
 };
@@ -29,19 +47,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center', // Center vertically
         alignItems: 'center', // Center horizontally
-        gap: 20, // Space between elements
-    },
-    button: {
-        backgroundColor: '#007bff', // Blue button
-        paddingVertical: 10, // Padding above and below text
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        alignSelf: 'center', // Center button
-    },
-    buttonText: {
-        color: '#fff', // White text
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
+    }
 });
