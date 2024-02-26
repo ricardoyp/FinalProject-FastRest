@@ -7,6 +7,11 @@ import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
 import { MenuScreen } from './screens/MenuScreen';
 
+import { TamaguiProvider } from '@tamagui/core'
+import { useFonts } from "expo-font";
+import config from './tamagui.config';
+
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -30,9 +35,20 @@ const MyStack = () => {
 }
 
 export default function App() {
+  const [loaded] = useFonts({
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
-      <MyStack />
+      <TamaguiProvider config={config}>
+        <MyStack />
+      </TamaguiProvider>
     </NavigationContainer>
   );
 }

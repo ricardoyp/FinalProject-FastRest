@@ -1,6 +1,20 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { getCollection } from "../API";
+import { useEffect } from "react";
 
 export const MenuScreen = ({ navigation }) => {
+
+    let menu = [];
+
+    useEffect(() => {
+        menu = getCollection('menu');
+    }
+        , []);
+
+    menu.map((item, index) => {
+        console.log(item);
+    });
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
