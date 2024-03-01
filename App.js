@@ -15,16 +15,50 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useColorScheme } from 'react-native'
 
 import { tamaguiConfig } from './tamagui.config'
+import { Plus, ShoppingCart } from '@tamagui/lucide-icons';
+import { ShoppingScreen } from './screens/ShoppingScreen';
 
 const queryClient = new QueryClient()
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const MenuStack = createNativeStackNavigator();
+
+const MenuStackScreen = ({ navigation }) => {
+  return (
+    <MenuStack.Navigator>
+      <MenuStack.Screen name="Menu" component={MenuScreen} options={
+        {
+          tabBarIcon: ({ color, size }) => (
+            <Plus size={size} color={color} />
+          ),
+          headerRight: () => (
+            <ShoppingCart
+              onPress={() => navigation.navigate('Shopping')}
+
+            />
+          ),
+        }
+      } />
+      <MenuStack.Screen name="Shopping" component={ShoppingScreen} />
+    </MenuStack.Navigator>
+  );
+}
+
 const MyTabs = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Menu" component={MenuScreen} />
+      <Tab.Screen
+        name="MenuStack"
+        component={MenuStackScreen}
+        options={
+          {
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Plus size={size} color={color} />
+            ),
+          }} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );

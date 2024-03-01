@@ -1,6 +1,9 @@
-import { Card, H2, Image, Paragraph, Button, XStack } from 'tamagui';
+import { useState } from 'react';
+import { Card, H2, Image, Paragraph, Button, XStack, Text } from 'tamagui';
 
-const MenuCard = ({ item, type }) => {
+export const MenuCard = ({ item }) => {
+    const [cart, setCart] = useState([]);
+
     return (
         <Card key={item.id} elevate size="$2" bordered width={250}>
             <Card.Header padded>
@@ -9,7 +12,14 @@ const MenuCard = ({ item, type }) => {
             </Card.Header>
             <Card.Footer padded>
                 <XStack flex={1} />
-                <Button borderRadius="$10">Purchase</Button>
+                <Button borderRadius="$10" onPress={() => {
+                    setCart([...cart, item]);
+                    console.log(cart);
+                }}>
+                    <Text>
+                        {item.price}€
+                    </Text>
+                </Button>
             </Card.Footer>
             <Card.Background>
                 <Image
@@ -22,4 +32,3 @@ const MenuCard = ({ item, type }) => {
     );
 };
 
-export default MenuCard;
