@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { getCollectionAppetizers } from "../API";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Card, H2, Image, Paragraph, ScrollView, XStack } from "tamagui";
@@ -14,7 +14,7 @@ export const MenuScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Text style={{ fontSize: 24, fontWeight: 'bold', padding: 5 }}>Appetizers</Text>
             <ScrollView>
-                <XStack gap="$3">
+                <XStack gap="3">
                     {appetizers?.map((appetizer, index) => {
                         return (
                             <Card key={index} elevate size="$2" bordered width={250}>

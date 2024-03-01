@@ -7,13 +7,16 @@ import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
 import { MenuScreen } from './screens/MenuScreen';
 
-import { TamaguiProvider } from '@tamagui/core'
-import { useFonts } from "expo-font";
-import config from './tamagui.config';
 
-import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { TamaguiProvider } from 'tamagui';
+
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { useColorScheme } from 'react-native'
+
+import { tamaguiConfig } from './tamagui.config'
+
 const queryClient = new QueryClient()
-
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,22 +41,19 @@ const MyStack = () => {
 }
 
 export default function App() {
-  const [loaded] = useFonts({
-    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
-    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
-  });
-
-  if (!loaded) {
-    return null;
-  }
+  const colorScheme = useColorScheme()
 
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
-        <TamaguiProvider config={config}>
-          <MyStack />
+        <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <MyStack />
+          </ThemeProvider>
         </TamaguiProvider>
       </NavigationContainer>
     </QueryClientProvider>
   );
 }
+
+
