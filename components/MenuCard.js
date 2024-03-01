@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Card, H2, Image, Paragraph, Button, XStack, Text } from 'tamagui';
+import { CartContext } from '../context/CartContext';
 
 export const MenuCard = ({ item }) => {
-    const [cart, setCart] = useState([]);
+
+    const { addToCart } = useContext(CartContext);
 
     return (
         <Card key={item.id} elevate size="$2" bordered width={250}>
@@ -13,8 +15,7 @@ export const MenuCard = ({ item }) => {
             <Card.Footer padded>
                 <XStack flex={1} />
                 <Button borderRadius="$10" onPress={() => {
-                    setCart([...cart, item]);
-                    console.log(cart);
+                    addToCart(item);
                 }}>
                     <Text>
                         {item.price}€

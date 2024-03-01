@@ -7,7 +7,6 @@ import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
 import { MenuScreen } from './screens/MenuScreen';
 
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { TamaguiProvider } from 'tamagui';
 
@@ -17,6 +16,7 @@ import { useColorScheme } from 'react-native'
 import { tamaguiConfig } from './tamagui.config'
 import { Plus, ShoppingCart } from '@tamagui/lucide-icons';
 import { ShoppingScreen } from './screens/ShoppingScreen';
+import { CartProvider } from './context/CartContext';
 
 const queryClient = new QueryClient()
 
@@ -26,6 +26,7 @@ const Tab = createBottomTabNavigator();
 const MenuStack = createNativeStackNavigator();
 
 const MenuStackScreen = ({ navigation }) => {
+
   return (
     <MenuStack.Navigator>
       <MenuStack.Screen name="Menu" component={MenuScreen} options={
@@ -82,7 +83,9 @@ export default function App() {
       <NavigationContainer>
         <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-            <MyStack />
+            <CartProvider>
+              <MyStack />
+            </CartProvider>
           </ThemeProvider>
         </TamaguiProvider>
       </NavigationContainer>
