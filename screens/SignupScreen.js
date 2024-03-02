@@ -1,11 +1,13 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { Button } from 'tamagui';
 
-export const SignupScreen = ({navigation}) => {
+export const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
 
     const handleSignUp = async () => {
         try {
@@ -13,11 +15,16 @@ export const SignupScreen = ({navigation}) => {
                 auth,
                 email,
                 password
-            )
+            );
+
+            await updateProfile(userCredential.user, {
+                displayName: name
+            });
+
             console.log('Usuario registrado con éxito:', userCredential.user);
-            navigation.navigate('Login')
+            navigation.navigate('Login');
         } catch (error) {
-            console.error('Error al registrar el usuario:', error)
+            console.error('Error al registrar el usuario:', error);
             alert(error.message);
         }
     };
@@ -26,22 +33,29 @@ export const SignupScreen = ({navigation}) => {
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <View>
                 <Text style={styles.text}>SignUp</Text>
-                <TextInput 
-                    placeholder='Email' 
-                    style={styles.textInput} 
+                <TextInput
+                    placeholder='Name'
+                    style={styles.textInput}
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                />
+                <TextInput
+                    placeholder='Email'
+                    style={styles.textInput}
                     value={email}
                     onChangeText={(text) => setEmail(text)}
                 />
-                <TextInput 
-                    secureTextEntry 
-                    placeholder='Password' 
-                    style={styles.textInput} 
+                <TextInput
+                    secureTextEntry
+                    placeholder='Password'
+                    style={styles.textInput}
                     value={password}
                     onChangeText={(text) => setPassword(text)}
                 />
                 <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                     <Text style={styles.buttonText}>SignUp</Text>
                 </TouchableOpacity>
+                <Button onPress={() => navigation.navigate('Login')}>Login</Button>
             </View>
         </KeyboardAvoidingView>
     );

@@ -14,9 +14,11 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useColorScheme } from 'react-native'
 
 import { tamaguiConfig } from './tamagui.config'
-import { Plus, ShoppingCart } from '@tamagui/lucide-icons';
+import { Notebook, Settings, ShoppingCart } from '@tamagui/lucide-icons';
 import { ShoppingScreen } from './screens/ShoppingScreen';
 import { CartProvider } from './context/CartContext';
+import { auth } from './config/firebase';
+import { AuthProvider } from './context/AuthContext';
 
 const queryClient = new QueryClient()
 
@@ -25,19 +27,16 @@ const Tab = createBottomTabNavigator();
 
 const MenuStack = createNativeStackNavigator();
 
+
 const MenuStackScreen = ({ navigation }) => {
 
   return (
     <MenuStack.Navigator>
       <MenuStack.Screen name="Menu" component={MenuScreen} options={
         {
-          tabBarIcon: ({ color, size }) => (
-            <Plus size={size} color={color} />
-          ),
           headerRight: () => (
             <ShoppingCart
               onPress={() => navigation.navigate('Shopping')}
-
             />
           ),
         }
@@ -57,39 +56,55 @@ const MyTabs = () => {
           {
             headerShown: false,
             tabBarIcon: ({ color, size }) => (
-              <Plus size={size} color={color} />
+              <Notebook size={size} color={color} />
             ),
           }} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} options={
+        {
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <Settings size={size} color={color} />
+          ),
+        }} />
     </Tab.Navigator>
   );
 };
 
 const MyStack = () => {
+  const user = auth.currentUser;
   return (
-    <Stack.Navigator>
-      <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
-      <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignupScreen} />
-      <Stack.Screen options={{ headerShown: false }} name="Home" component={MyTabs} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignupScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="Home" component={MyTabs} />
+      </Stack.Navigator>
+    </NavigationContainer>
+
   );
 }
 
-export default function App() {
+const Providers = () => {
   const colorScheme = useColorScheme()
 
   return (
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <AuthProvider>
             <CartProvider>
               <MyStack />
             </CartProvider>
-          </ThemeProvider>
-        </TamaguiProvider>
-      </NavigationContainer>
+          </AuthProvider>
+        </ThemeProvider>
+      </TamaguiProvider>
     </QueryClientProvider>
+  )
+}
+
+export default function App() {
+  return (
+    <Providers />
   );
 }
 

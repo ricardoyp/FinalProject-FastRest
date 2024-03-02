@@ -30,3 +30,8 @@ export const addDataMainPlates = async (nameId, data) => {
 export const addDataDessert = async (nameId, data) => {
     await setDoc(doc(db, "Desserts", nameId), data);
 }
+
+export const createBillTicket = async (data) => {
+    await setDoc(doc(db, "BillTickets", data.date), data);
+}
+

@@ -19,7 +19,7 @@ export const SettingsScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {user ? (
-                <Text style={styles.text}>Welcome, {user.email}!</Text>
+                <Text style={styles.text}>Welcome, {user.displayName}!</Text>
             ) : (
                 <Text style={styles.text}>No user logged in.</Text>
             )}

@@ -2,6 +2,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { Button } from 'tamagui';
 
 export const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
@@ -48,6 +49,7 @@ export const LoginScreen = ({navigation}) => {
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
                 <Text style={styles.buttonText}>Go to Settings</Text>
             </TouchableOpacity>
+            <Button onPress={() => navigation.navigate('SignUp')}>Signup</Button>
         </KeyboardAvoidingView>
         
     );

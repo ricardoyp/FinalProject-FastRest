@@ -1,10 +1,10 @@
-import { Button, Card, Group, ListItem, Text, View } from "tamagui";
+import { Button, Card, Group, Text, View } from "tamagui";
 import { Plus, Trash2 } from "@tamagui/lucide-icons";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
 export const CartItem = ({ item }) => {
-    const { removeFromCart } = useContext(CartContext);
+    const { removeFromCart, addFromCart } = useContext(CartContext);
     return (
         <Card key={item.id} elevate size="$2" bordered width={250}>
             <Card.Header padded>
@@ -25,7 +25,9 @@ export const CartItem = ({ item }) => {
                         <Text>{item.quantity}</Text>
                     </Group.Item>
                     <Group.Item>
-                        <Button>
+                        <Button onPress={() => {
+                            addFromCart(item);
+                        }}>
                             <Plus />
                         </Button>
                     </Group.Item>
