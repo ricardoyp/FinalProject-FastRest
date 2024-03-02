@@ -1,8 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Button } from 'tamagui';
 
-export const SettingsScreen = () => {
+export const SettingsScreen = ({navigation}) => {
     const { currentUser, signOut } = useContext(AuthContext);
 
     const handleSignOut = async () => {
@@ -15,6 +16,9 @@ export const SettingsScreen = () => {
             <TouchableOpacity style={styles.button} onPress={handleSignOut}>
                 <Text style={styles.buttonText}>Sign out</Text>
             </TouchableOpacity>
+            <Button onPress={() => navigation.navigate('Order')}>
+                Order History
+            </Button>
         </View>
     );
 };

@@ -2,12 +2,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { SettingsScreen } from './screens/HomeScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
 import { MenuScreen } from './screens/MenuScreen';
 import { ShoppingScreen } from './screens/ShoppingScreen';
 import { ScanModal } from './screens/ScanModal';
+import { OrderHistoryScreen } from './screens/OrderHistoryScreen';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { TamaguiProvider } from 'tamagui';
@@ -30,6 +31,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MenuStack = createNativeStackNavigator();
+const SettingsStack = createNativeStackNavigator();
 
 
 const MenuStackScreen = ({ navigation }) => {
@@ -56,6 +58,15 @@ const MenuStackScreen = ({ navigation }) => {
   );
 }
 
+const SettingsStackScreen = ({ navigation }) => {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen name="Settings" component={SettingsScreen} />
+      <SettingsStack.Screen name="Order" component={OrderHistoryScreen} />
+    </SettingsStack.Navigator>
+  );
+}
+
 const MyTabs = () => {
   return (
     <Tab.Navigator>
@@ -69,7 +80,7 @@ const MyTabs = () => {
               <Notebook size={size} color={color} />
             ),
           }} />
-      <Tab.Screen name="Settings" component={SettingsScreen} options={
+      <Tab.Screen name="SettingsStack" component={SettingsStackScreen} options={
         {
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
