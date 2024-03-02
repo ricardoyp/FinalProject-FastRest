@@ -6,7 +6,7 @@ import { CartContext } from "../context/CartContext";
 export const CartItem = ({ item }) => {
     const { removeFromCart, addFromCart } = useContext(CartContext);
     return (
-        <Card key={item.id} elevate size="$2" bordered width={250}>
+        <Card key={item.name} elevate size="$2" bordered width={250}>
             <Card.Header padded>
                 <Text>{item.name}</Text>
                 <Text theme="alt2">Quantity: {item.quantity}</Text>

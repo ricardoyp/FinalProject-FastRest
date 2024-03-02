@@ -6,10 +6,10 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     const [ cartItems, setCartItems ] = useState([]);
-    const [ tableNumber, setTableNumber ] = useState([]);
+    const [ tableNumber, setTableNumber ] = useState('');
 
     const { currentUser } = useContext(AuthContext);
-    
+
     const addToCart = (item) => {
         if (cartItems.find((cartItem) => cartItem.name === item.name)) {
             setCartItems(cartItems.map((cartItem) => {
@@ -29,20 +29,17 @@ export const CartProvider = ({ children }) => {
 
     const removeFromCart = (item) => {
         if (cartItems.find((cartItem) => cartItem.name === item.name)) {
-            setCartItems(cartItems.map((cartItem) => {
+            setCartItems(cartItems.filter((cartItem) => {
                 if (cartItem.name === item.name) {
-                    return {
-                        ...cartItem,
-                        quantity: cartItem.quantity - 1
-                    };
+                    cartItem.quantity -= 1;
+                    return cartItem.quantity > 0; // Only return items with quantity > 0
                 }
-                return cartItem;
+                return true; // Return all other items
             }));
         } else {
             setCartItems([...cartItems, { ...item, quantity: 1 }]);
         }
-        console.log(cartItems);
-    }
+    };
 
     const addFromCart = (item) => {
         if (cartItems.find((cartItem) => cartItem.name === item.name)) {
@@ -66,20 +63,27 @@ export const CartProvider = ({ children }) => {
     };
 
     const confirmOrder = (cart) => {
+
         const order = {
             table: tableNumber,
-            cart,
             date: new Date().toISOString(),
-            price: cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2) + "€",
             name: currentUser.displayName,
             email: currentUser.email,
+            cart,
+            price: cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2) + "€",
         };
-        createBillTicket(order);
-        clearCart();
+        if (tableNumber !== '') {
+            createBillTicket(order);
+            clearCart();
+        } else {
+            alert("Please, scan the QR code to get your table number");
+        }
     }
 
-    const contextValue = {  cartItems, addToCart, clearCart, removeFromCart, addFromCart, confirmOrder, 
-                            tableNumber, setTableNumber};
+    const contextValue = {
+        cartItems, addToCart, clearCart, removeFromCart, addFromCart, confirmOrder,
+        tableNumber, setTableNumber
+    };
 
     return (
         <CartContext.Provider value={{ ...contextValue }}>
