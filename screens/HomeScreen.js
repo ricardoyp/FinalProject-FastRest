@@ -1,30 +1,19 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { auth } from '../config/firebase';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
-export const SettingsScreen = ({ navigation }) => {
-
-    const user = auth.currentUser;
+export const SettingsScreen = () => {
+    const { currentUser, signOut } = useContext(AuthContext);
 
     const handleSignOut = async () => {
-        try {
-            await auth.signOut();
-            console.log('Usuario deslogueado con éxito');
-            navigation.navigate('Login');
-        } catch (error) {
-            console.error('Error al desloguear el usuario:', error);
-            alert(error.message);
-        }
+        signOut();
     }
 
     return (
         <View style={styles.container}>
-            {user ? (
-                <Text style={styles.text}>Welcome, {user.displayName}!</Text>
-            ) : (
-                <Text style={styles.text}>No user logged in.</Text>
-            )}
+            <Text style={styles.text}>Welcome, {currentUser.displayName}!</Text>
             <TouchableOpacity style={styles.button} onPress={handleSignOut}>
-                <Text style={styles.buttontext}>Sign out</Text>
+                <Text style={styles.buttonText}>Sign out</Text>
             </TouchableOpacity>
         </View>
     );

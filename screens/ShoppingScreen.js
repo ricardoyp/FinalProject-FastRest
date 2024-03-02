@@ -5,9 +5,10 @@ import { CartItem } from "../components/CartItem";
 
 export const ShoppingScreen = () => {
     const { cartItems, confirmOrder, clearCart } = useContext(CartContext);
+    const { tableNumber } = useContext(CartContext);
     return (
         <View>
-            <Text>Shopping Screen</Text>
+            <Text>Shopping Screen - Table {tableNumber}</Text>
             <ScrollView>
                 <YStack gap="3">
                     {cartItems?.map((item, index) => (

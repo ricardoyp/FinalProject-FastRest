@@ -6,6 +6,8 @@ import { SettingsScreen } from './screens/HomeScreen';
 import { LoginScreen } from './screens/LoginScreen';
 import { SignupScreen } from './screens/SignupScreen';
 import { MenuScreen } from './screens/MenuScreen';
+import { ShoppingScreen } from './screens/ShoppingScreen';
+import { ScanModal } from './screens/ScanModal';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { TamaguiProvider } from 'tamagui';
@@ -14,11 +16,13 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useColorScheme } from 'react-native'
 
 import { tamaguiConfig } from './tamagui.config'
-import { Notebook, Settings, ShoppingCart } from '@tamagui/lucide-icons';
-import { ShoppingScreen } from './screens/ShoppingScreen';
+import { Notebook, ScanBarcode, Settings, ShoppingCart } from '@tamagui/lucide-icons';
+
+import { useContext, useEffect } from 'react';
+import { useFonts } from 'expo-font';
+
+import { AuthContext, AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
-import { auth } from './config/firebase';
-import { AuthProvider } from './context/AuthContext';
 
 const queryClient = new QueryClient()
 
@@ -35,13 +39,19 @@ const MenuStackScreen = ({ navigation }) => {
       <MenuStack.Screen name="Menu" component={MenuScreen} options={
         {
           headerRight: () => (
-            <ShoppingCart
-              onPress={() => navigation.navigate('Shopping')}
-            />
+            <>
+              <ShoppingCart
+                onPress={() => navigation.navigate('Shopping')}
+              />
+              <ScanBarcode
+                onPress={() => navigation.navigate('Scan')}
+              />
+            </>
           ),
         }
       } />
       <MenuStack.Screen name="Shopping" component={ShoppingScreen} />
+      <MenuStack.Screen name="Scan" component={ScanModal} options={{ presentation: 'modal' }} />
     </MenuStack.Navigator>
   );
 }
@@ -71,14 +81,19 @@ const MyTabs = () => {
 };
 
 const MyStack = () => {
-  const user = auth.currentUser;
+  const { currentUser } = useContext(AuthContext);
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
-        <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignupScreen} />
-        <Stack.Screen options={{ headerShown: false }} name="Home" component={MyTabs} />
-      </Stack.Navigator>
+      {currentUser ? (
+        <Stack.Navigator>
+          <Stack.Screen options={{ headerShown: false }} name="Home" component={MyTabs} />
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator>
+          <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
+          <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignupScreen} />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
 
   );
@@ -103,6 +118,21 @@ const Providers = () => {
 }
 
 export default function App() {
+  const [loaded] = useFonts({
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
+
+  useEffect(() => {
+    if (loaded) {
+      // can hide splash screen here
+    }
+  }, [loaded])
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
     <Providers />
   );

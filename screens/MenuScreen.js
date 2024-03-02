@@ -5,7 +5,6 @@ import { MenuSection } from "../components/MenuSection";
 import { ScrollView } from "tamagui";
 
 export const MenuScreen = ({ navigation }) => {
-
     const { data: appetizers } = useQuery({
         queryKey: ['allAppetizers'],
         queryFn: getCollectionAppetizers

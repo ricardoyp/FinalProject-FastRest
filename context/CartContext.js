@@ -1,14 +1,15 @@
-import React, { createContext, useState } from 'react';
-import { auth } from '../config/firebase';
+import React, { createContext, useContext, useState } from 'react';
 import { createBillTicket } from '../API';
+import { AuthContext } from './AuthContext';
 
 export const CartContext = createContext();
 
-const user = auth.currentUser;
-
 export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
+    const [ cartItems, setCartItems ] = useState([]);
+    const [ tableNumber, setTableNumber ] = useState([]);
 
+    const { currentUser } = useContext(AuthContext);
+    
     const addToCart = (item) => {
         if (cartItems.find((cartItem) => cartItem.name === item.name)) {
             setCartItems(cartItems.map((cartItem) => {
@@ -66,16 +67,19 @@ export const CartProvider = ({ children }) => {
 
     const confirmOrder = (cart) => {
         const order = {
+            table: tableNumber,
             cart,
             date: new Date().toISOString(),
             price: cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2) + "€",
-            name: user.displayName,
+            name: currentUser.displayName,
+            email: currentUser.email,
         };
         createBillTicket(order);
         clearCart();
     }
 
-    const contextValue = { cartItems, addToCart, clearCart, removeFromCart, addFromCart, confirmOrder };
+    const contextValue = {  cartItems, addToCart, clearCart, removeFromCart, addFromCart, confirmOrder, 
+                            tableNumber, setTableNumber};
 
     return (
         <CartContext.Provider value={{ ...contextValue }}>
