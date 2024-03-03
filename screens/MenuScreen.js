@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MenuSection } from "../components/MenuSection";
 import { ScrollView } from "tamagui";
 
-export const MenuScreen = ({ navigation }) => {
+export const MenuScreen = () => {
     const { data: appetizers } = useQuery({
         queryKey: ['allAppetizers'],
         queryFn: getCollectionAppetizers

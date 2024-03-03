@@ -39,7 +39,7 @@ export const getBillTicketsByEmail = async (email) => {
     try {
         const querySnapshot = await getDocs(collection(db, "BillTickets"));
         const data = querySnapshot.docs.map((doc) => doc.data()).filter((ticket) => ticket.email === email)
-        console.log(data);
+        console.log("DATA", data );
         return data;
     } catch (error) {
         console.error("Error fetching tickets:", error);

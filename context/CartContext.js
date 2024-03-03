@@ -70,7 +70,7 @@ export const CartProvider = ({ children }) => {
             name: currentUser.displayName,
             email: currentUser.email,
             cart,
-            price: cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2) + "€",
+            totalPrice: cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2) + "€",
         };
         if (tableNumber !== '') {
             createBillTicket(order);
