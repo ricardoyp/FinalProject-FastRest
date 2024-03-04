@@ -46,3 +46,17 @@ export const getBillTicketsByEmail = async (email) => {
         throw error; // Re-throw the error for proper handling
     }
 };
+
+export const addPromotion = async (code) => {
+    console.log("CODE", code);
+    try {
+        const querySnapshot = await getDocs(collection(db, "Promotions"));
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        const filteredData = data.filter((promotion) => promotion.code === code);
+        console.log("DATAPromotions", data );
+        console.log("filteredData", filteredData );
+    } catch (error) {
+        console.error("Error adding promotion:", error);
+        throw error; // Re-throw the error for proper handling
+    }
+}

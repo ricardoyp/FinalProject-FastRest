@@ -24,6 +24,8 @@ import { useFonts } from 'expo-font';
 
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { PromotionsScreen } from './screens/PromotionsScreen';
+import { TicketScreen } from './screens/TicketScreen';
 
 const queryClient = new QueryClient()
 
@@ -63,6 +65,8 @@ const SettingsStackScreen = ({ navigation }) => {
     <SettingsStack.Navigator>
       <SettingsStack.Screen name="Settings" component={SettingsScreen} />
       <SettingsStack.Screen name="Order" component={OrderHistoryScreen} />
+      <SettingsStack.Screen name="Ticket" component={TicketScreen} />
+      <SettingsStack.Screen name="Promotions" component={PromotionsScreen} />
     </SettingsStack.Navigator>
   );
 }

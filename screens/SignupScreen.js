@@ -18,7 +18,8 @@ export const SignupScreen = ({ navigation }) => {
             );
 
             await updateProfile(userCredential.user, {
-                displayName: name
+                displayName: name,
+                isAdmin: true
             });
 
             console.log('Usuario registrado con éxito:', userCredential.user);

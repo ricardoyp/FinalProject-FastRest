@@ -3,6 +3,8 @@ import { initializeApp } from "firebase/app";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,5 +31,19 @@ export const auth = initializeAuth(app, {
 
 export const db = getFirestore(app);
 
+export const storage = getStorage(app);
 
+// const direccion = "gs://restaurant-service-70ab8.appspot.com/imagesPlates/cevicheCamaron.avif"
 
+// const imageRef = ref(storage, direccion);
+
+// // Obtener la URL de descarga
+// getDownloadURL(imageRef)
+//   .then((url) => {
+//     // La URL de la imagen está disponible y se puede usar aquí
+//     console.log(url);
+//   })
+//   .catch((error) => {
+//     // Se produjo un error
+//     console.error(error);
+//   });

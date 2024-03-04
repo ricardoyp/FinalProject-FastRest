@@ -11,11 +11,11 @@ export const AuthContext = createContext({
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+    useEffect(() => { // Se ejecuta cada vez que el usuario cambia (Registro, Login, Logout)
+        const unsubscribe = onAuthStateChanged(auth, (user) => { 
             if (user) {
-                // console.log('Usuario logueado:', user);
                 setCurrentUser(user);
+                console.log('User changed: ', user);
             }
         });
         return unsubscribe;
@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }) => {
     const signIn = async (email, password) => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            console.log('Usuario logueado con éxito:', userCredential.user);
+            console.log('User logged in successfully: ', userCredential.user);
             setCurrentUser(userCredential.user);
         } catch (error) {  
-            console.error('Error al loguear el usuario:', error);
+            console.error('User not logged in because:', error);
             alert(error.message);
         }
     }
@@ -35,10 +35,10 @@ export const AuthProvider = ({ children }) => {
     const signOut = async () => {
         try {
             await auth.signOut();
-            console.log('Usuario deslogueado con éxito');
+            console.log('User logged out successfully.');
             setCurrentUser(null);
         } catch (error) {
-            console.error('Error al desloguear el usuario:', error);
+            console.error('User not logout because:', error);
             alert(error.message);
         }
     }

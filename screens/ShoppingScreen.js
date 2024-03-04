@@ -6,21 +6,21 @@ import { CartItem } from "../components/CartItem";
 export const ShoppingScreen = () => {
     const { cartItems, confirmOrder, clearCart } = useContext(CartContext);
     const { tableNumber } = useContext(CartContext);
-
     console.log(cartItems);
 
     return (
         <View>
-            <Text>Shopping Screen - Table {tableNumber}</Text>
+            <Text fontSize={"$8"}> 🍽️ Table: {tableNumber ? tableNumber : "No Yet"}</Text>
+            <View height={600}>
             <ScrollView>
-                <YStack gap="3">
+                <YStack gap="3" padding="$2">
                     {cartItems?.map((item, index) => (
-                        item ?
                         <CartItem key={index} item={item} />
-                        : null
                     ))}
                 </YStack>
             </ScrollView>
+            </View>
+            <Text fontSize={"$8"}>Total: {cartItems.reduce((acc, curr) => acc + curr.price * curr.quantity, 0).toFixed(2)}€</Text>
             <Button onPress={() => confirmOrder(cartItems)}>Confirm Order</Button>
             <Button onPress={() => clearCart()}>Clear Cart</Button>
         </View>
