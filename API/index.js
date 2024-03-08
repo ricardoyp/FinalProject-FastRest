@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
 export const getCollectionAppetizers = async () => {
@@ -33,13 +33,13 @@ export const addDataDessert = async (nameId, data) => {
 
 export const createBillTicket = async (data) => {
     await setDoc(doc(db, "BillTickets", data.date), data);
+
 }
 
 export const getBillTicketsByEmail = async (email) => {
     try {
         const querySnapshot = await getDocs(collection(db, "BillTickets"));
         const data = querySnapshot.docs.map((doc) => doc.data()).filter((ticket) => ticket.email === email)
-        console.log("DATA", data );
         return data;
     } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -47,16 +47,72 @@ export const getBillTicketsByEmail = async (email) => {
     }
 };
 
-export const addPromotion = async (code) => {
-    console.log("CODE", code);
+
+export const addPromotion = async (code, userId) => {
     try {
+        const userRef = doc(db, 'users', userId);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+
+        if (userData.promotions && userData.promotions.some(promotion => promotion.code === code)) {
+            alert('Promotion code already added');
+        }
+
         const querySnapshot = await getDocs(collection(db, "Promotions"));
         const data = querySnapshot.docs.map((doc) => doc.data());
         const filteredData = data.filter((promotion) => promotion.code === code);
-        console.log("DATAPromotions", data );
-        console.log("filteredData", filteredData );
+
+        if (filteredData.length === 0) {
+            alert('Invalid promotion code');
+        } else {
+            await updateDoc(userRef, {
+                promotions: arrayUnion(...filteredData)
+            });
+        }
     } catch (error) {
         console.error("Error adding promotion:", error);
         throw error; // Re-throw the error for proper handling
     }
+}
+
+export const createUser = async (data, uid) => {
+    await setDoc(doc(db, "users", uid), data);
+}
+
+export const getRol = async (uid) => {
+    try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const data = querySnapshot.docs.map((doc) => doc.data()).filter((user) => user.uid === uid);
+        const rol = data[0].rol;
+        console.log(rol);
+        return rol
+    } catch (error) {
+        console.error("Error fetching rol:", error);
+        throw error; // Re-throw the error for proper handling
+    }
+}
+
+export const getPromotions = async (userId) => {
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+    const promotions = userSnap.data().promotions;
+    if (!promotions) {
+        return [];
+    }
+    return promotions;
+}
+
+export const usePromotion = async (userUid, promotionCode) => {
+    const userRef = doc(db, 'users', userUid);
+    const userSnap = await getDoc(userRef);
+    const promotions = userSnap.data().promotions;
+    const filteredPromotions = promotions.map(promotion => {
+        if (promotion.code === promotionCode) {
+            return { ...promotion, used: true };
+        } else {
+            return promotion;
+        }
+    })
+
+    await updateDoc(userRef, { promotions: filteredPromotions });
 }

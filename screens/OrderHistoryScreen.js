@@ -17,16 +17,17 @@ export const OrderHistoryScreen = ({navigation}) => {
 
     return (
         <View>
-            <Text>Order History Screen</Text>
             <ScrollView>
                 <YStack gap="3" padding="$2">
-                    {billTickets?.map((ticket) => {
-                        return (
+                {billTickets?.length > 0 ? (
+                        billTickets.map((ticket) => (
                             <TouchableOpacity onPress={() => navigation.navigate('Ticket', { ticket })}>
                                 <OrderItem item={ticket} />
                             </TouchableOpacity>
-                        )
-                    })}
+                        ))
+                    ) : (
+                        <Text>No hay tickets disponibles</Text>
+                    )}
                 </YStack>
             </ScrollView>
         </View>

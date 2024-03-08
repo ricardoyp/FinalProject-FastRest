@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
-import { Button, Card, Separator } from 'tamagui';
+import { Button, Card, Text, View } from 'tamagui';
 import { Share } from '@tamagui/lucide-icons';
 
 export const TicketScreen = () => {
@@ -67,6 +66,9 @@ export const TicketScreen = () => {
         )}
                 </tbody>
             </table>
+            ${tick.promotion && `
+            <h3>Discount: -${tick.promotion.amount}€</h3>
+            `}
             <h3>TOTAL: ${tick.totalPrice}</h3>
         </body>
         </html>
@@ -80,22 +82,26 @@ export const TicketScreen = () => {
     }
 
     return (
-        <View>
-            <Text>TICKET</Text>
-            <Text>Date: {ticket.date}</Text>
-            <Text>Name: {ticket.name}</Text>
-            <Text>Table: {ticket.table}</Text>
-            <Text>Cart:</Text>
-            {ticket.cart.map((item, index) => (
-                <Card key={index}>
-                    <Text>Plate: {item.name}</Text>
-                    <Text>Price: {item.price}€</Text>
-                    <Text>Quantity: {item.quantity}</Text>
-                    <Text>Total: {item.price * item.quantity}€</Text>
-                </Card>
-            ))}
-            <Text>TOTAL: {ticket.totalPrice}</Text>
-            <Button icon={Share} title="Generate PDF" onPress={() => generatePDF(ticket)} />
-        </View>
+        <View >
+        <Text>Date: {ticket.date}</Text>
+        <Text>Name: {ticket.name}</Text>
+        <Text>Table: {ticket.table}</Text>
+        {ticket.cart.map((itemTicket, index) => (
+            <Card key={index}>
+                <Card.Header>
+                    <Text>Plate: {itemTicket.name}</Text>
+                    <Text>Price: {itemTicket.price}€</Text>
+                    <Text>Quantity: {itemTicket.quantity}</Text>
+                </Card.Header>
+                <Card.Footer padded>
+                    <Text>Total: {itemTicket.price * itemTicket.quantity}€</Text>
+                </Card.Footer>
+            </Card>
+        ))}
+        <Text fontSize={"$8"}>TOTAL: {ticket.cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}€</Text>
+        {ticket.promotion && <Text fontSize={"$6"}>Discount: -{ticket.promotion.amount}{ticket.promotion.type === 'percentage' ? "%" : "€"}</Text>}
+        {ticket.promotion && <Text fontSize={"$6"}>Total to pay: {ticket.totalPrice}€</Text>}
+        <Button icon={Share} title="Generate PDF" onPress={() => generatePDF(ticket)} />
+    </View>
     );
 }

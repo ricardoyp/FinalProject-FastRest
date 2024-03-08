@@ -5,13 +5,19 @@ import { auth } from '../config/firebase';
 import { Button } from 'tamagui';
 import { createUser } from '../API';
 
-export const SignupScreen = ({ navigation }) => {
+export const SignupAdminScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [adminCode, setAdminCode] = useState('');
 
     const handleSignUp = async () => {
         try {
+            if (adminCode !== process.env.EXPO_PUBLIC_ADMIN_CODE) {
+                alert('El código de administrador es incorrecto');
+                return;
+            }
+
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 email,
@@ -20,14 +26,13 @@ export const SignupScreen = ({ navigation }) => {
 
             await updateProfile(userCredential.user, {
                 displayName: name,
-                photoURL: "../public/images/perfilBLANK.png"
             });
 
             const user = {
                 uid: userCredential.user.uid,
                 displayName: userCredential.user.displayName,
                 email: userCredential.user.email,
-                rol: "client",
+                rol: "admin",
             }            
 
             await createUser( user, user.uid);
@@ -61,6 +66,12 @@ export const SignupScreen = ({ navigation }) => {
                     style={styles.textInput}
                     value={password}
                     onChangeText={(text) => setPassword(text)}
+                />
+                <TextInput
+                    placeholder='···ADMINCODE···'
+                    style={styles.textInput}
+                    value={adminCode}
+                    onChangeText={(text) => setAdminCode(text)}
                 />
                 <TouchableOpacity style={styles.button} onPress={handleSignUp}>
                     <Text style={styles.buttonText}>SignUp</Text>

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
 export const CartItem = ({ item }) => {
-    const { removeFromCart, addFromCart } = useContext(CartContext);
+    const { removeFromCart, addToCart } = useContext(CartContext);
     return (
         <Card key={item.name} bordered>
             <Card.Header padded>
@@ -22,7 +22,7 @@ export const CartItem = ({ item }) => {
                         </Button>
                     </Group.Item>
                     <Group.Item>
-                        <Button icon={Plus} onPress={() => { addFromCart(item) }} />
+                        <Button icon={Plus} onPress={() => { addToCart(item) }} />
                     </Group.Item>
                 </Group>
             </Card.Footer>

@@ -26,6 +26,7 @@ import { AuthContext, AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { PromotionsScreen } from './screens/PromotionsScreen';
 import { TicketScreen } from './screens/TicketScreen';
+import { SignupAdminScreen } from './screens/SignUpAdminScreen';
 
 const queryClient = new QueryClient()
 
@@ -40,20 +41,7 @@ const MenuStackScreen = ({ navigation }) => {
 
   return (
     <MenuStack.Navigator>
-      <MenuStack.Screen name="Menu" component={MenuScreen} options={
-        {
-          headerRight: () => (
-            <>
-              <ShoppingCart
-                onPress={() => navigation.navigate('Shopping')}
-              />
-              <ScanBarcode
-                onPress={() => navigation.navigate('Scan')}
-              />
-            </>
-          ),
-        }
-      } />
+      <MenuStack.Screen name="Menu" component={MenuScreen} options={{ headerRight: () => (<ShoppingCart onPress={() => navigation.navigate('Shopping')} />) }} />
       <MenuStack.Screen name="Shopping" component={ShoppingScreen} />
       <MenuStack.Screen name="Scan" component={ScanModal} options={{ presentation: 'modal' }} />
     </MenuStack.Navigator>
@@ -107,6 +95,7 @@ const MyStack = () => {
         <Stack.Navigator>
           <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
           <Stack.Screen options={{ headerShown: false }} name="SignUp" component={SignupScreen} />
+          <Stack.Screen options={{ headerShown: false }} name="SignUpAdmin" component={SignupAdminScreen} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

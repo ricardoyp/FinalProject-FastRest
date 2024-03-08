@@ -25,25 +25,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Get a reference to the Auth service
-export const auth = initializeAuth(app, {
+export const auth = initializeAuth(app
+    , {
     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-});
+}
+);
 
 export const db = getFirestore(app);
 
 export const storage = getStorage(app);
 
-// const direccion = "gs://restaurant-service-70ab8.appspot.com/imagesPlates/cevicheCamaron.avif"
-
-// const imageRef = ref(storage, direccion);
-
-// // Obtener la URL de descarga
-// getDownloadURL(imageRef)
-//   .then((url) => {
-//     // La URL de la imagen está disponible y se puede usar aquí
-//     console.log(url);
-//   })
-//   .catch((error) => {
-//     // Se produjo un error
-//     console.error(error);
-//   });
