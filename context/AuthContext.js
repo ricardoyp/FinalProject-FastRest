@@ -4,15 +4,16 @@ import { auth } from "../config/firebase";
 
 export const AuthContext = createContext({
     currentUser: null,
-    signIn: () => {},
-    signOut: () => {},
+    signIn: () => { },
+    signOut: () => { },
 });
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => { // Se ejecuta cada vez que el usuario cambia (Registro, Login, Logout)
-        const unsubscribe = onAuthStateChanged(auth, (user) => { 
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log(user)
             if (user) {
                 setCurrentUser(user);
                 console.log('User changed: ', user);
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }) => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log('User logged in successfully: ', userCredential.user);
             setCurrentUser(userCredential.user);
-        } catch (error) {  
+        } catch (error) {
             console.error('User not logged in because:', error);
             alert(error.message);
         }

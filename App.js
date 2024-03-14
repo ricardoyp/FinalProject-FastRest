@@ -27,6 +27,8 @@ import { CartProvider } from './context/CartContext';
 import { PromotionsScreen } from './screens/PromotionsScreen';
 import { TicketScreen } from './screens/TicketScreen';
 import { SignupAdminScreen } from './screens/SignUpAdminScreen';
+import { ProfileScreen } from './screens/ProfileScreen';
+import { AdminOptionsScreen } from './screens/AdminOptionsScreen';
 
 const queryClient = new QueryClient()
 
@@ -48,6 +50,16 @@ const MenuStackScreen = ({ navigation }) => {
   );
 }
 
+const ProfileStack = createNativeStackNavigator();
+
+const ProfileStackScreen = ({ navigation }) => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen name="ProfileView" component={ProfileScreen} options={{headerShown: false}}/>
+    </ProfileStack.Navigator>
+  );
+}
+
 const SettingsStackScreen = ({ navigation }) => {
   return (
     <SettingsStack.Navigator>
@@ -55,6 +67,8 @@ const SettingsStackScreen = ({ navigation }) => {
       <SettingsStack.Screen name="Order" component={OrderHistoryScreen} />
       <SettingsStack.Screen name="Ticket" component={TicketScreen} />
       <SettingsStack.Screen name="Promotions" component={PromotionsScreen} />
+      <SettingsStack.Screen name="Profile" component={ProfileStackScreen} />
+      <SettingsStack.Screen name="Admin" component={AdminOptionsScreen} />
     </SettingsStack.Navigator>
   );
 }

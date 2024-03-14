@@ -16,7 +16,7 @@ export const SignupScreen = ({ navigation }) => {
                 auth,
                 email,
                 password
-            );
+            );            
 
             await updateProfile(userCredential.user, {
                 displayName: name,

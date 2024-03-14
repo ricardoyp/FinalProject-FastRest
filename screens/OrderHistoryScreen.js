@@ -20,8 +20,8 @@ export const OrderHistoryScreen = ({navigation}) => {
             <ScrollView>
                 <YStack gap="3" padding="$2">
                 {billTickets?.length > 0 ? (
-                        billTickets.map((ticket) => (
-                            <TouchableOpacity onPress={() => navigation.navigate('Ticket', { ticket })}>
+                        billTickets.map((ticket, index) => (
+                            <TouchableOpacity onPress={() => navigation.navigate('Ticket', { ticket })} key={index}>
                                 <OrderItem item={ticket} />
                             </TouchableOpacity>
                         ))

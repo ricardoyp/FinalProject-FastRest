@@ -47,7 +47,6 @@ export const getBillTicketsByEmail = async (email) => {
     }
 };
 
-
 export const addPromotion = async (code, userId) => {
     try {
         const userRef = doc(db, 'users', userId);
@@ -56,6 +55,7 @@ export const addPromotion = async (code, userId) => {
 
         if (userData.promotions && userData.promotions.some(promotion => promotion.code === code)) {
             alert('Promotion code already added');
+            return;
         }
 
         const querySnapshot = await getDocs(collection(db, "Promotions"));
