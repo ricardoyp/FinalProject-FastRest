@@ -6,10 +6,10 @@ import { launchImageLibraryAsync } from 'expo-image-picker';
 import { storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
-export const AdminOptionsScreen = ({ navigation }) => {
+export const AdminAddPlate = ({ navigation }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(0);
     const [val, setVal] = useState('')
     const [image, setImage] = useState(null);
     const [progress, setProgress] = useState(0);
@@ -18,22 +18,21 @@ export const AdminOptionsScreen = ({ navigation }) => {
         const plate = {
             name: name,
             description: description,
-            price: price,
+            price: Number(price),
             imageUrl: imageUrl
         }
         console.log('Plate:', plate)    
 
         switch (val) {
-            case 'appetizers':
+            case 'Appetizers':
                 addDataAppetizers(name, plate);
-                console.log('Plate:', plate)
                 break;
-            case 'main Course':
+            case 'Main Course':
                 addDataMainPlates(name, plate);
                 break;
-            case 'drinks':
+            case 'Drinks':
                 break;
-            case 'desserts':
+            case 'Desserts':
                 addDataDessert(name, plate);
                 break;
             default:
@@ -100,7 +99,7 @@ export const AdminOptionsScreen = ({ navigation }) => {
                 <SelectComponent items={items} value={val} onValueChange={setVal} />
                 <Input placeholder="Name" onChangeText={(text) => { setName(text) }} />
                 <Input placeholder="Description" onChangeText={(text) => { setDescription(text) }} />
-                <Input placeholder="Price" onChangeText={(text) => { setPrice(text) }} />
+                <Input placeholder="Price" onChangeText={(text) => { setPrice(text) }}/>
                 <Button onPress={pickImageAsync} onValueChange={handleChange}> Select a Image </Button>
                 <Button bordered onPress={handleUpload}> Add </Button>
             </YStack>

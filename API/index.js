@@ -116,3 +116,7 @@ export const usePromotion = async (userUid, promotionCode) => {
 
     await updateDoc(userRef, { promotions: filteredPromotions });
 }
+
+export const updatePlate = async (collectionName, plateName, data) => {
+    await updateDoc(doc(db, collectionName, plateName), data);
+} 

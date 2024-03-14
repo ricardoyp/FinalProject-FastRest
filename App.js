@@ -28,7 +28,8 @@ import { PromotionsScreen } from './screens/PromotionsScreen';
 import { TicketScreen } from './screens/TicketScreen';
 import { SignupAdminScreen } from './screens/SignUpAdminScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
-import { AdminOptionsScreen } from './screens/AdminOptionsScreen';
+import { AdminAddPlate } from './screens/AdminAddPlateScreen';
+import { AdminUpdatePlate } from './screens/AdminUpdatePlateScreen';
 
 const queryClient = new QueryClient()
 
@@ -68,7 +69,8 @@ const SettingsStackScreen = ({ navigation }) => {
       <SettingsStack.Screen name="Ticket" component={TicketScreen} />
       <SettingsStack.Screen name="Promotions" component={PromotionsScreen} />
       <SettingsStack.Screen name="Profile" component={ProfileStackScreen} />
-      <SettingsStack.Screen name="Admin" component={AdminOptionsScreen} />
+      <SettingsStack.Screen name="AdminAddPlate" component={AdminAddPlate} />
+      <SettingsStack.Screen name="AdminUpdatePlate" component={AdminUpdatePlate} />
     </SettingsStack.Navigator>
   );
 }

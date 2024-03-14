@@ -76,7 +76,7 @@ export const SelectComponent = ({ value, onValueChange, ...props }) => {
                                         <Select.Item
                                             index={i}
                                             key={item.name}
-                                            value={item.name.toLowerCase()}
+                                            value={item.name}
                                         >
                                             <Select.ItemText>{item.name}</Select.ItemText>
                                             <Select.ItemIndicator marginLeft="auto">

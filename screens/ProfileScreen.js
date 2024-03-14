@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Button, H1, H3, Input, ScrollView, Separator, Stack, Text } from "tamagui";
 import { updateProfile } from "firebase/auth";
