@@ -30,6 +30,7 @@ import { SignupAdminScreen } from './screens/SignUpAdminScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { AdminAddPlate } from './screens/AdminAddPlateScreen';
 import { AdminUpdatePlate } from './screens/AdminUpdatePlateScreen';
+import { AdminDeletePlate } from './screens/AdminDeletePlateScreen';
 
 const queryClient = new QueryClient()
 
@@ -71,6 +72,7 @@ const SettingsStackScreen = ({ navigation }) => {
       <SettingsStack.Screen name="Profile" component={ProfileStackScreen} />
       <SettingsStack.Screen name="AdminAddPlate" component={AdminAddPlate} />
       <SettingsStack.Screen name="AdminUpdatePlate" component={AdminUpdatePlate} />
+      <SettingsStack.Screen name="AdminDeletePlate" component={AdminDeletePlate} />
     </SettingsStack.Navigator>
   );
 }

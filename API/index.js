@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 
 export const getCollectionAppetizers = async () => {
@@ -119,4 +119,8 @@ export const usePromotion = async (userUid, promotionCode) => {
 
 export const updatePlate = async (collectionName, plateName, data) => {
     await updateDoc(doc(db, collectionName, plateName), data);
-} 
+}
+
+export const deletePlate = async (collectionName, plateName) => {
+    await deleteDoc(doc(db, collectionName, plateName));
+}

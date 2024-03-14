@@ -24,6 +24,7 @@ export const SettingsScreen = ({ navigation }) => {
             <YStack gap="$2" padding="$4">
                 <Button bordered onPress={() => navigation.navigate('AdminAddPlate')}> ADMIN ADD </Button>
                 <Button bordered onPress={() => navigation.navigate('AdminUpdatePlate')}> ADMIN UPDATE </Button>
+                <Button bordered onPress={() => navigation.navigate('AdminDeletePlate')}> ADMIN DELETE </Button>
                 <Button bordered onPress={() => navigation.navigate('Order')}> Order History </Button>
                 <Button bordered onPress={() => navigation.navigate('Promotions')}> Promotions </Button>
                 <Button bordered color={'$red11'} onPress={handleSignOut}> Sign Out </Button>
