@@ -24,7 +24,7 @@ export const addDataAppetizers = async (nameId, data) => {
 }
 
 export const addDataMainPlates = async (nameId, data) => {
-    await setDoc(doc(db, "MainPlates", nameId), data);
+    await setDoc(doc(db, "MainCourse", nameId), data);
 }
 
 export const addDataDessert = async (nameId, data) => {
@@ -123,4 +123,8 @@ export const updatePlate = async (collectionName, plateName, data) => {
 
 export const deletePlate = async (collectionName, plateName) => {
     await deleteDoc(doc(db, collectionName, plateName));
+}
+
+export const updateUser = async (uid, data) => {
+    await updateDoc(doc(db, "users", uid), data);
 }

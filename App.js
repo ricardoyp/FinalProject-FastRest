@@ -32,7 +32,7 @@ import { AdminAddPlate } from './screens/AdminAddPlateScreen';
 import { AdminUpdatePlate } from './screens/AdminUpdatePlateScreen';
 import { AdminDeletePlate } from './screens/AdminDeletePlateScreen';
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

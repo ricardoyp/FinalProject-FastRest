@@ -77,7 +77,7 @@ export const SignupAdminScreen = ({ navigation }) => {
                     <Text style={styles.buttonText}>SignUp</Text>
                 </TouchableOpacity>
                 <Button onPress={() => navigation.navigate('Login')}>Login</Button>
-                <Button onPress={() => navigation.navigate('SignUpAdmin')}>Not Client</Button>
+                <Button onPress={() => navigation.navigate('SignUp')}>I'm Client</Button>
             </View>
         </KeyboardAvoidingView>
     );

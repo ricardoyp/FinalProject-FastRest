@@ -1,17 +1,18 @@
 import { getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse } from "../API";
 import { useQuery } from "@tanstack/react-query";
-import { Button, H2, ScrollView, Stack, Tabs, Text, View } from "tamagui";
+import { Button, H2, ScrollView, Stack, Tabs, Text } from "tamagui";
 import { Scan } from "@tamagui/lucide-icons";
 import { MenuCard } from "../components/MenuCard";
+import { useEffect } from "react";
 
 export const MenuScreen = ({ navigation }) => {
+    
     return (
         <ScrollView>
             <Stack flexDirection="row" padding='$2'>
                 <Button size={'$6'} icon={Scan} onPress={() => navigation.navigate('Scan')}>
                     ScanQR
                 </Button>
-
             </Stack>
             <TabsMenu />
         </ScrollView>
@@ -22,7 +23,7 @@ export const TabsMenu = () => {
 
     const { data: appetizers } = useQuery({
         queryKey: ['allAppetizers'],
-        queryFn: getCollectionAppetizers
+        queryFn: getCollectionAppetizers,
     });
 
     const { data: maincourse } = useQuery({

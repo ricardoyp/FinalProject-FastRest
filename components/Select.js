@@ -1,5 +1,5 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Adapt, Select, Sheet, YStack, getFontSize } from 'tamagui'
 // import { LinearGradient } from 'tamagui/linear-gradient'
 

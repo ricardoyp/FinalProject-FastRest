@@ -1,26 +1,18 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Button, H1, H3, Input, ScrollView, Separator, Stack, Text } from "tamagui";
-import { updateProfile } from "firebase/auth";
+import { Button, H1, H3, Input, ScrollView, Separator, Stack } from "tamagui";
 
 export const ProfileScreen = () => {
-const { currentUser } = useContext(AuthContext);
+const { currentUser, updateChangesUser } = useContext(AuthContext);
 
 const [name, setName] = useState('');
 
-const handleChanges = async () => {
+const handleChanges = () => {
     if (name !== '') {
-        try {
-            await updateProfile(currentUser, {
-                displayName: name,
-            });
-
-            alert('Nombre actualizado con éxito')
-        } catch (error) {
-            alert('Error al actualizar el nombre: ', error);
-        }
+        updateChangesUser(name);
+        setName('');
     } else {
-        alert('Por favor, introduce un nombre');
+        alert('Name cannot be empty');
     }
 }
 
@@ -30,7 +22,7 @@ return (
             <H1>NAME: {currentUser.displayName}</H1>
             <H3>EMAIL: {currentUser.email}</H3>
             <Separator borderColor={"$black025"} />
-            <Input placeholder="Name" onChangeText={(text) => setName(text)}
+            <Input placeholder="Name" value={name} onChangeText={(text) => setName(text)}
             />
             <Button onPress={handleChanges}>Edit Profile</Button>
         </Stack>

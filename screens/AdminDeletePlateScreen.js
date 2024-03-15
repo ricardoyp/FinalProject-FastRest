@@ -2,12 +2,14 @@ import { Button, View, YStack } from "tamagui"
 import { SelectComponent } from "../components/Select"
 import { useEffect, useState } from "react"
 import { deletePlate, getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse } from "../API"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { queryClient } from "../App"
 
 export const AdminDeletePlate = () => {
     const [val, setVal] = useState('')
     const [subval, setSubval] = useState('')
     const [subitems, setSubitems] = useState([])
+    const [uid, setUid] = useState('')
 
     const { data: appetizers } = useQuery({
         queryKey: ['allAppetizers'],
@@ -29,7 +31,7 @@ export const AdminDeletePlate = () => {
                 platesObjects = appetizers?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
-            case 'Main Course':
+            case 'MainCourse':
                 platesObjects = mainCourses?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
@@ -42,9 +44,39 @@ export const AdminDeletePlate = () => {
         }
     }, [val]);
 
+    useEffect(() => {
+        switch (val) {
+            case 'Appetizers':
+                const appetizer = appetizers?.find(appetizer => appetizer.name === subval);
+                setUid(appetizer.uid);
+                break;
+            case 'MainCourse':
+                const mainCourse = mainCourses?.find(mainCourse => mainCourse.name === subval);
+                setUid(mainCourse.uid);
+                break;
+            case 'Desserts':
+                const dessert = desserts?.find(dessert => dessert.name === subval);
+                setUid(dessert.uid);
+                break;
+            default:
+                break;
+        }
+    }, [subval]);
+
+    const { mutate: mutateDelete } = useMutation({
+        mutationKey: ['mutateDelete'],
+        mutationFn: () => deletePlate(val, uid),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['allAppetizers'] });
+            queryClient.invalidateQueries({ queryKey: ['allMaincourse'] });
+            queryClient.invalidateQueries({ queryKey: ['allDesserts'] });
+            
+        }
+    });
+
     const handleDelete = () => {
-        console.log(val, subval);
-        deletePlate(val, subval);
+        console.log(val, subval, uid);
+        mutateDelete();
     }
 
     return (
@@ -63,7 +95,7 @@ const items = [
         name: "Appetizers"
     },
     {
-        name: "Main Course"
+        name: "MainCourse"
     },
     {
         name: "Drinks"

@@ -2,7 +2,7 @@ import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import { printToFileAsync } from "expo-print";
 import { shareAsync } from "expo-sharing";
-import { Button, Card, H2, H3, ScrollView, Stack, Text, View, XStack } from 'tamagui';
+import { Button, Card, H2, H3, ScrollView, Stack, Text, View } from 'tamagui';
 import { Share } from '@tamagui/lucide-icons';
 
 export const TicketScreen = () => {

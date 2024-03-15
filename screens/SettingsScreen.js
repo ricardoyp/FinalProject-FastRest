@@ -2,6 +2,8 @@ import { TouchableOpacity, View } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Avatar, Button, Separator, Text, XStack, YStack } from 'tamagui';
+import { getRol } from '../API';
+import { useQuery } from '@tanstack/react-query';
 
 export const SettingsScreen = ({ navigation }) => {
     const { currentUser, signOut } = useContext(AuthContext);
@@ -9,6 +11,10 @@ export const SettingsScreen = ({ navigation }) => {
     const handleSignOut = async () => {
         signOut();
     }
+    const { data: rol } = useQuery({
+        queryKey: ['getRol'],
+        queryFn: () => getRol(currentUser.uid),
+    });
 
     return (
         <View>
@@ -22,9 +28,9 @@ export const SettingsScreen = ({ navigation }) => {
             </XStack>
             <Separator marginVertical={5} />
             <YStack gap="$2" padding="$4">
-                <Button bordered onPress={() => navigation.navigate('AdminAddPlate')}> ADMIN ADD </Button>
-                <Button bordered onPress={() => navigation.navigate('AdminUpdatePlate')}> ADMIN UPDATE </Button>
-                <Button bordered onPress={() => navigation.navigate('AdminDeletePlate')}> ADMIN DELETE </Button>
+                {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminAddPlate')}> ADMIN ADD </Button>}
+                {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminUpdatePlate')}> ADMIN UPDATE </Button>}
+                {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminDeletePlate')}> ADMIN DELETE </Button>}
                 <Button bordered onPress={() => navigation.navigate('Order')}> Order History </Button>
                 <Button bordered onPress={() => navigation.navigate('Promotions')}> Promotions </Button>
                 <Button bordered color={'$red11'} onPress={handleSignOut}> Sign Out </Button>

@@ -5,6 +5,8 @@ import { addDataAppetizers, addDataDessert, addDataMainPlates } from "../API";
 import { launchImageLibraryAsync } from 'expo-image-picker';
 import { storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "../App";
 
 export const AdminAddPlate = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -12,32 +14,35 @@ export const AdminAddPlate = ({ navigation }) => {
     const [price, setPrice] = useState(0);
     const [val, setVal] = useState('')
     const [image, setImage] = useState(null);
+    const [uid, setUid] = useState(Date.now().toString());
+
     const [progress, setProgress] = useState(0);
 
-    const createPlate = (imageUrl) => {   
+    const createPlate = (imageUrl) => {  
         const plate = {
             name: name,
             description: description,
             price: Number(price),
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            uid: uid
         }
-        console.log('Plate:', plate)    
 
         switch (val) {
             case 'Appetizers':
-                addDataAppetizers(name, plate);
+                addDataAppetizers(uid, plate);
                 break;
             case 'Main Course':
-                addDataMainPlates(name, plate);
+                addDataMainPlates(uid, plate);
                 break;
             case 'Drinks':
                 break;
             case 'Desserts':
-                addDataDessert(name, plate);
+                addDataDessert(uid, plate);
                 break;
             default:
                 break;
         }
+        console.log('Plate added', plate);
     }
 
     const pickImageAsync = async () => {
@@ -85,12 +90,35 @@ export const AdminAddPlate = ({ navigation }) => {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    createPlate(downloadURL)
+                    switch (val) {
+                        case 'Appetizers':
+                            mutateCreate(downloadURL);
+                            break;
+                        case 'Main Course':
+                            mutateCreate(downloadURL);
+                            break;
+                        case 'Drinks':
+                            break;
+                        case 'Desserts':
+                            mutateCreate(downloadURL);
+                            break;
+                        default:
+                            break;
+                    }
                 });
             }
             );
     }
 
+    const { mutate: mutateCreate, isPending } = useMutation({
+        mutationKey: ['mutateCreate'],
+        mutationFn: (url) => createPlate(url), 
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['allAppetizers'] }); 
+            queryClient.invalidateQueries({ queryKey: ['allMaincourse'] }); 
+            queryClient.invalidateQueries({ queryKey: ['allDesserts'] });
+        }
+    });
 
     return (
         <View>

@@ -1,6 +1,7 @@
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../config/firebase";
+import { updateUser } from "../API";
 
 export const AuthContext = createContext({
     currentUser: null,
@@ -27,6 +28,7 @@ export const AuthProvider = ({ children }) => {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log('User logged in successfully: ', userCredential.user);
             setCurrentUser(userCredential.user);
+            
         } catch (error) {
             console.error('User not logged in because:', error);
             alert(error.message);
@@ -44,10 +46,28 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const updateChangesUser = async (name) => {
+        try {
+            await updateProfile(currentUser, {
+                displayName: name,
+            });
+            setCurrentUser({
+                ...currentUser,
+                displayName: name,
+            });
+            await updateUser(currentUser.uid, { displayName: name });
+            console.log('User updated: ', currentUser);
+        } catch (error) {
+            console.error('User profile not updated because:', error);
+            alert(error.message);
+        }
+    }
+
     const contextValue = {
         currentUser,
         signIn,
         signOut,
+        updateChangesUser,
     };
 
 

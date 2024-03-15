@@ -36,9 +36,6 @@ export const LoginScreen = ({navigation}) => {
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
-                <Text style={styles.buttonText}>Go to Settings</Text>
-            </TouchableOpacity>
             <Button onPress={() => navigation.navigate('SignUp')}>Signup</Button>
         </KeyboardAvoidingView>
         

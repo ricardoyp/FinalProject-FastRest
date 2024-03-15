@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { Button, Image, Input, Text, View, YStack } from "tamagui";
 import { SelectComponent } from "../components/Select";
-import { getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse } from "../API";
-import { useQuery } from "@tanstack/react-query";
+import { getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse, getIdsAppetizers } from "../API";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { launchImageLibraryAsync } from "expo-image-picker";
 import { updatePlate } from "../API";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../config/firebase";
+import { queryClient } from "../App";
 
 export const AdminUpdatePlate = ({ navigation }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState(null);
+    const [uid, setUid] = useState('');
 
     const [progress, setProgress] = useState(0);
 
@@ -41,7 +43,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
                 platesObjects = appetizers?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
-            case 'Main Course':
+            case 'MainCourse':
                 platesObjects = mainCourses?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
@@ -55,27 +57,27 @@ export const AdminUpdatePlate = ({ navigation }) => {
     }, [val]);
 
     useEffect(() => {
-        console.log(subval);
         switch (val) {
             case 'Appetizers':
                 appetizers?.map((plate) => {
                     if (plate.name === subval) {
-                        console.log("plate: ", plate);
                         setName(plate.name);
                         setDescription(plate.description);
                         setPrice(plate.price);
                         setImage(plate.imageUrl);
+                        setUid(plate.uid);
                     }
                 }
                 );
                 break;
-            case 'Main Course':
+            case 'MainCourse':
                 mainCourses?.map((plate) => {
                     if (plate.name === subval) {
                         setName(plate.name);
                         setDescription(plate.description);
                         setPrice(plate.price);
                         setImage(plate.imageUrl);
+                        setUid(plate.uid);
                     }
                 }
                 );
@@ -87,6 +89,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
                         setDescription(plate.description);
                         setPrice(plate.price);
                         setImage(plate.imageUrl);
+                        setUid(plate.uid);
                     }
                 }
                 );
@@ -96,17 +99,29 @@ export const AdminUpdatePlate = ({ navigation }) => {
         }
     }, [subval]);
 
-    const update = (imageUrl) => { 
+    const { mutate: mutateUpdate, isPending } = useMutation({
+        mutationKey: ['mutationUpdate'],
+        mutationFn: (plate) => updatePlate(val, uid, plate),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['allAppetizers'] });
+            queryClient.invalidateQueries({ queryKey: ['allMaincourse'] });
+            queryClient.invalidateQueries({ queryKey: ['allDesserts'] });
+        }
+    });
+
+    const update = (imageUrl) => {
         const plate = {
             name: name,
             description: description,
             price: Number(price),
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            uid: uid,
         }
-        updatePlate(val, subval, plate)
+        mutateUpdate(plate);
         console.log('VAL:', val)
         console.log('SUBVAL:', subval)
-        console.log('Plate:', plate)    
+        console.log('UID:', uid)
+        console.log('Plate:', plate)
     }
 
     const pickImageAsync = async () => {
@@ -183,7 +198,7 @@ const items = [
         name: "Appetizers"
     },
     {
-        name: "Main Course"
+        name: "MainCourse"
     },
     {
         name: "Drinks"
