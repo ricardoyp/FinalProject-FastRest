@@ -1,11 +1,11 @@
 import { Button, View, YStack } from "tamagui"
 import { SelectComponent } from "../components/Select"
 import { useEffect, useState } from "react"
-import { deletePlate, getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse } from "../API"
+import { deletePlate, getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse } from "../API"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { queryClient } from "../App"
+import { queryClient } from "../config/queryClient"
 
-export const AdminDeletePlate = () => {
+export const AdminDeletePlate = ({navigation}) => {
     const [val, setVal] = useState('')
     const [subval, setSubval] = useState('')
     const [subitems, setSubitems] = useState([])
@@ -15,13 +15,20 @@ export const AdminDeletePlate = () => {
         queryKey: ['allAppetizers'],
         queryFn: getCollectionAppetizers
     });
+
     const { data: mainCourses } = useQuery({
         queryKey: ['allMaincourse'],
         queryFn: getCollectionMainCourse
     });
+
     const { data: desserts } = useQuery({
         queryKey: ['allDesserts'],
         queryFn: getCollectionDesserts
+    });
+
+    const { data: drinks } = useQuery({
+        queryKey: ['allDrinks'],
+        queryFn: getCollectionDrinks
     });
 
     useEffect(() => {
@@ -37,6 +44,10 @@ export const AdminDeletePlate = () => {
                 break;
             case 'Desserts':
                 platesObjects = desserts?.map((plate) => ({ name: plate.name }));
+                setSubitems(platesObjects);
+                break;
+            case 'Drinks':
+                platesObjects = drinks?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
             default:
@@ -58,6 +69,10 @@ export const AdminDeletePlate = () => {
                 const dessert = desserts?.find(dessert => dessert.name === subval);
                 setUid(dessert.uid);
                 break;
+            case 'Drinks':
+                const drink = drinks?.find(drink => drink.name === subval);
+                setUid(drink.uid);
+                break;
             default:
                 break;
         }
@@ -70,7 +85,8 @@ export const AdminDeletePlate = () => {
             queryClient.invalidateQueries({ queryKey: ['allAppetizers'] });
             queryClient.invalidateQueries({ queryKey: ['allMaincourse'] });
             queryClient.invalidateQueries({ queryKey: ['allDesserts'] });
-            
+            queryClient.invalidateQueries({ queryKey: ['allDrinks'] });
+            navigation.goBack();
         }
     });
 

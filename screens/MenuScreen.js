@@ -1,12 +1,10 @@
-import { getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse } from "../API";
+import { getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse } from "../API";
 import { useQuery } from "@tanstack/react-query";
 import { Button, H2, ScrollView, Stack, Tabs, Text } from "tamagui";
 import { Scan } from "@tamagui/lucide-icons";
 import { MenuCard } from "../components/MenuCard";
-import { useEffect } from "react";
 
 export const MenuScreen = ({ navigation }) => {
-    
     return (
         <ScrollView>
             <Stack flexDirection="row" padding='$2'>
@@ -34,6 +32,11 @@ export const TabsMenu = () => {
     const { data: desserts } = useQuery({
         queryKey: ['allDesserts'],
         queryFn: getCollectionDesserts
+    });
+
+    const { data: drinks } = useQuery({
+        queryKey: ['allDrinks'],
+        queryFn: getCollectionDrinks
     });
 
     return (
@@ -65,6 +68,12 @@ export const TabsMenu = () => {
                     </Stack>
                 </Tabs.Content>
                 <Tabs.Content value="tab2">
+                    <H2 paddingLeft='$3'>Drinks</H2>
+                    <Stack paddingHorizontal='$3' gap='$3' width={'100%'}>
+                        {drinks?.map((item, index) => (
+                            <MenuCard key={index} item={item} />
+                        ))}
+                    </Stack>
                 </Tabs.Content>
                 <Tabs.Content value="tab3">
                     <H2 paddingLeft='$3'>Desserts</H2>

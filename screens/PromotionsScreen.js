@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { PromotionItem } from "../components/PromotionItem";
 
-export const PromotionsScreen = () => {
+export const PromotionsScreen = ({navigation}) => {
     const [code, setCode] = useState('');
     const { currentUser } = useContext(AuthContext);
 
@@ -35,7 +35,7 @@ export const PromotionsScreen = () => {
                     {promotions?.length > 0 ? (
                         promotions?.map((promotion, index) => {
                             return (
-                                <PromotionItem key={index} promotion={promotion} />
+                                <PromotionItem key={index} promotion={promotion} navigation={navigation}/>
                             )
                         }
                         )

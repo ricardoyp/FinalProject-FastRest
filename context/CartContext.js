@@ -5,6 +5,7 @@ import { AuthContext } from './AuthContext';
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+    
     const [cartItems, setCartItems] = useState([]);
     const [tableNumber, setTableNumber] = useState('');
     const [promotionCart, setPromotion] = useState('');
@@ -98,6 +99,7 @@ export const CartProvider = ({ children }) => {
             setPromotion('');
             setTotalPrice(0);
             clearCart();
+            console.log('ORDER', order);
         } else {
             alert("Please, scan the QR code to get your table number");
         }

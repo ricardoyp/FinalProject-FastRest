@@ -2,7 +2,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../config/firebase';
-import { Button } from 'tamagui';
+import { Button, Input, Stack } from 'tamagui';
 import { createUser } from '../API';
 
 export const SignupAdminScreen = ({ navigation }) => {
@@ -46,39 +46,18 @@ export const SignupAdminScreen = ({ navigation }) => {
 
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
-            <View>
+            <Stack width={'75%'} gap={'$2'}>
                 <Text style={styles.text}>SignUp</Text>
-                <TextInput
-                    placeholder='Name'
-                    style={styles.textInput}
-                    value={name}
-                    onChangeText={(text) => setName(text)}
-                />
-                <TextInput
-                    placeholder='Email'
-                    style={styles.textInput}
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
-                />
-                <TextInput
-                    secureTextEntry
-                    placeholder='Password'
-                    style={styles.textInput}
-                    value={password}
-                    onChangeText={(text) => setPassword(text)}
-                />
-                <TextInput
-                    placeholder='···ADMINCODE···'
-                    style={styles.textInput}
-                    value={adminCode}
-                    onChangeText={(text) => setAdminCode(text)}
-                />
-                <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-                    <Text style={styles.buttonText}>SignUp</Text>
-                </TouchableOpacity>
+                <Input placeholder='Name' value={name} onChangeText={(text) => setName(text)} />
+                <Input placeholder='Email' value={email} onChangeText={(text) => setEmail(text)} />
+                <Input secureTextEntry placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
+                <Input placeholder='···ADMINCODE···' value={adminCode} onChangeText={(text) => setAdminCode(text)} />
+            </Stack>
+            <Stack width={'50%'} gap={'$2'}>
+                <Button onPress={handleSignUp}>SignUp</Button>
                 <Button onPress={() => navigation.navigate('Login')}>Login</Button>
-                <Button onPress={() => navigation.navigate('SignUp')}>I'm Client</Button>
-            </View>
+                <Button unstyled onPress={() => navigation.navigate('SignUp')}>I'm Client</Button>
+            </Stack>
         </KeyboardAvoidingView>
     );
 };
@@ -96,28 +75,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 10, // Margin below text
-    },
-    textInput: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 20, // Margin below input
-        paddingHorizontal: 10,
-        width: 250,
-    },
-    button: {
-        backgroundColor: '#007bff', // Blue button
-        paddingVertical: 10, // Padding above and below text
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        width: 150,
-        alignSelf: 'center', // Center button
-    },
-    buttonText: {
-        color: '#fff', // White text
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
+    }
 });

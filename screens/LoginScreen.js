@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useContext, useState } from 'react'
-import { Button } from 'tamagui';
+import { Button, Input } from 'tamagui';
 import { AuthContext } from '../context/AuthContext';
 
 export const LoginScreen = ({navigation}) => {
@@ -17,25 +17,12 @@ export const LoginScreen = ({navigation}) => {
 
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
-            <View>
+            <View width={'75%'}>
                 <Text style={styles.text}>Login</Text>
-                <TextInput
-                    placeholder='Email'
-                    style={styles.textInput}
-                    value={email}
-                    onChangeText={(text) => setEmail(text)}
-                />
-                <TextInput
-                    secureTextEntry
-                    placeholder='Password'
-                    style={styles.textInput}
-                    value={password}
-                    onChangeText={(text) => setPassword(text)}
-                />
-                <TouchableOpacity style={styles.button} onPress={ () => handleLogin(email, password)}>
-                    <Text style={styles.buttonText}>Login</Text>
-                </TouchableOpacity>
+                <Input placeholder='Email' value={email} onChangeText={(text) => setEmail(text)} />
+                <Input placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
             </View>
+            <Button onPress={ () => handleLogin(email, password)} width={'50%'}>Login</Button>
             <Button onPress={() => navigation.navigate('SignUp')}>Signup</Button>
         </KeyboardAvoidingView>
         
@@ -64,19 +51,5 @@ const styles = StyleSheet.create({
         marginBottom: 20, // Margin below input
         paddingHorizontal: 10,
         width: 250,
-    },
-    button: {
-        backgroundColor: '#007bff', // Blue button
-        paddingVertical: 10, // Padding above and below text
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        width: 150,
-        alignSelf: 'center', // Center button
-    },
-    buttonText: {
-        color: '#fff', // White text
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
     },
 });

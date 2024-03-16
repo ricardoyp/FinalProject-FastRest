@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button, Input, Text, View, YStack } from "tamagui";
 import { SelectComponent } from "../components/Select";
-import { addDataAppetizers, addDataDessert, addDataMainPlates } from "../API";
+import { addDataAppetizers, addDataDessert, addDataDrinks, addDataMainPlates } from "../API";
 import { launchImageLibraryAsync } from 'expo-image-picker';
 import { storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../App";
+import { queryClient } from "../config/queryClient";
 
 export const AdminAddPlate = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -35,6 +35,7 @@ export const AdminAddPlate = ({ navigation }) => {
                 addDataMainPlates(uid, plate);
                 break;
             case 'Drinks':
+                addDataDrinks(uid, plate);
                 break;
             case 'Desserts':
                 addDataDessert(uid, plate);
@@ -43,6 +44,7 @@ export const AdminAddPlate = ({ navigation }) => {
                 break;
         }
         console.log('Plate added', plate);
+        navigation.goBack();
     }
 
     const pickImageAsync = async () => {
@@ -98,6 +100,7 @@ export const AdminAddPlate = ({ navigation }) => {
                             mutateCreate(downloadURL);
                             break;
                         case 'Drinks':
+                            mutateCreate(downloadURL);
                             break;
                         case 'Desserts':
                             mutateCreate(downloadURL);
@@ -117,6 +120,7 @@ export const AdminAddPlate = ({ navigation }) => {
             queryClient.invalidateQueries({ queryKey: ['allAppetizers'] }); 
             queryClient.invalidateQueries({ queryKey: ['allMaincourse'] }); 
             queryClient.invalidateQueries({ queryKey: ['allDesserts'] });
+            queryClient.invalidateQueries({ queryKey: ['allDrinks'] });
         }
     });
 

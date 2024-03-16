@@ -1,7 +1,6 @@
 import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useMemo } from 'react'
 import { Adapt, Select, Sheet, YStack, getFontSize } from 'tamagui'
-// import { LinearGradient } from 'tamagui/linear-gradient'
 
 export const SelectComponent = ({ value, onValueChange, ...props }) => {
 
@@ -117,13 +116,6 @@ export const SelectComponent = ({ value, onValueChange, ...props }) => {
                     <YStack zIndex={10}>
                         <ChevronDown size={20} />
                     </YStack>
-                    {/* <LinearGradient
-                        start={[0, 0]}
-                        end={[0, 1]}
-                        fullscreen
-                        colors={['transparent', '$background']}
-                        borderRadius="$4"
-                    /> */}
                 </Select.ScrollDownButton>
             </Select.Content>
         </Select>

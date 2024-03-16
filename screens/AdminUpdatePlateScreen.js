@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button, Image, Input, Text, View, YStack } from "tamagui";
 import { SelectComponent } from "../components/Select";
-import { getCollectionAppetizers, getCollectionDesserts, getCollectionMainCourse, getIdsAppetizers } from "../API";
+import { getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse, getIdsAppetizers } from "../API";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { launchImageLibraryAsync } from "expo-image-picker";
 import { updatePlate } from "../API";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../config/firebase";
-import { queryClient } from "../App";
+import { queryClient } from "../config/queryClient";
 
 export const AdminUpdatePlate = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -36,6 +36,11 @@ export const AdminUpdatePlate = ({ navigation }) => {
         queryFn: getCollectionDesserts
     });
 
+    const { data: drinks } = useQuery({
+        queryKey: ['allDrinks'],
+        queryFn: getCollectionDrinks
+    });
+
     useEffect(() => {
         let platesObjects = [];
         switch (val) {
@@ -51,6 +56,9 @@ export const AdminUpdatePlate = ({ navigation }) => {
                 platesObjects = desserts?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
+            case 'Drinks': 
+                platesObjects = drinks?.map((plate) => ({ name: plate.name }));
+                setSubitems(platesObjects);
             default:
                 break;
         }
@@ -94,6 +102,18 @@ export const AdminUpdatePlate = ({ navigation }) => {
                 }
                 );
                 break;
+            case 'Drinks':
+                drinks?.map((plate) => {
+                    if (plate.name === subval) {
+                        setName(plate.name);
+                        setDescription(plate.description);
+                        setPrice(plate.price);
+                        setImage(plate.imageUrl);
+                        setUid(plate.uid);
+                    }
+                }
+                );
+                break;
             default:
                 break;
         }
@@ -106,6 +126,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
             queryClient.invalidateQueries({ queryKey: ['allAppetizers'] });
             queryClient.invalidateQueries({ queryKey: ['allMaincourse'] });
             queryClient.invalidateQueries({ queryKey: ['allDesserts'] });
+            queryClient.invalidateQueries({ queryKey: ['allDrinks'] });
         }
     });
 
@@ -121,7 +142,9 @@ export const AdminUpdatePlate = ({ navigation }) => {
         console.log('VAL:', val)
         console.log('SUBVAL:', subval)
         console.log('UID:', uid)
-        console.log('Plate:', plate)
+        console.log('Plate:', plate);
+        navigation.goBack();
+
     }
 
     const pickImageAsync = async () => {

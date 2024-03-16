@@ -21,6 +21,7 @@ export const OrderHistoryScreen = ({navigation}) => {
                 <YStack gap="3" padding="$2">
                 {billTickets?.length > 0 ? (
                         billTickets.map((ticket, index) => (
+                            console.log(ticket),
                             <TouchableOpacity onPress={() => navigation.navigate('Ticket', { ticket })} key={index}>
                                 <OrderItem item={ticket} />
                             </TouchableOpacity>

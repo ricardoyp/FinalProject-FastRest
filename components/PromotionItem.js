@@ -2,13 +2,15 @@ import { useContext } from "react";
 import { Button, Card, H3, Text } from "tamagui";
 import { CartContext } from "../context/CartContext";
 
-export const PromotionItem = ({ promotion }) => {
+export const PromotionItem = ({ promotion, navigation }) => {
     const { promotionCart, setPromotion, totalPrice } = useContext(CartContext);
 
     const handleUsePromotion = () => {
         if (totalPrice >= promotion.minCart) {
             setPromotion(promotion);
             alert('Promotion code added')
+            navigation.goBack();
+            navigation.navigate('Shopping');
         } else {
             setPromotion('');
             alert('You need to have a minimum of ' + promotion.minCart + '€ in your cart to use this promotion');

@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -9,21 +9,6 @@ import { MenuScreen } from './screens/MenuScreen';
 import { ShoppingScreen } from './screens/ShoppingScreen';
 import { ScanModal } from './screens/ScanModal';
 import { OrderHistoryScreen } from './screens/OrderHistoryScreen';
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { TamaguiProvider } from 'tamagui';
-
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import { useColorScheme } from 'react-native'
-
-import { tamaguiConfig } from './tamagui.config'
-import { Notebook, ScanBarcode, Settings, ShoppingCart } from '@tamagui/lucide-icons';
-
-import { useContext, useEffect } from 'react';
-import { useFonts } from 'expo-font';
-
-import { AuthContext, AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
 import { PromotionsScreen } from './screens/PromotionsScreen';
 import { TicketScreen } from './screens/TicketScreen';
 import { SignupAdminScreen } from './screens/SignUpAdminScreen';
@@ -32,14 +17,28 @@ import { AdminAddPlate } from './screens/AdminAddPlateScreen';
 import { AdminUpdatePlate } from './screens/AdminUpdatePlateScreen';
 import { AdminDeletePlate } from './screens/AdminDeletePlateScreen';
 
-export const queryClient = new QueryClient()
+import { QueryClientProvider } from '@tanstack/react-query'
+import { TamaguiProvider } from 'tamagui';
+
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
+import { useColorScheme } from 'react-native'
+
+import { tamaguiConfig } from './tamagui.config'
+import { Notebook, Settings, ShoppingCart } from '@tamagui/lucide-icons';
+
+import { useContext, useEffect } from 'react';
+import { useFonts } from 'expo-font';
+
+import { AuthContext, AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+import { queryClient } from './config/queryClient';
+
+const Tab = createBottomTabNavigator(); 
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
 const MenuStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
-
+const ProfileStack = createNativeStackNavigator();
 
 const MenuStackScreen = ({ navigation }) => {
 
@@ -51,8 +50,6 @@ const MenuStackScreen = ({ navigation }) => {
     </MenuStack.Navigator>
   );
 }
-
-const ProfileStack = createNativeStackNavigator();
 
 const ProfileStackScreen = ({ navigation }) => {
   return (
