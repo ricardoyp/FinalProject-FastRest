@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, updateEmail, updateProfile } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../config/firebase";
 import { updateUser } from "../API";
@@ -46,16 +46,18 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const updateChangesUser = async (name) => {
+    const updateChangesUser = async (name, email) => {
         try {
             await updateProfile(currentUser, {
                 displayName: name,
             });
+            await updateEmail(currentUser, email);
             setCurrentUser({
                 ...currentUser,
                 displayName: name,
+                email: email
             });
-            await updateUser(currentUser.uid, { displayName: name });
+            await updateUser(currentUser.uid, { displayName: name, email: email});
             console.log('User updated: ', currentUser);
         } catch (error) {
             console.error('User profile not updated because:', error);

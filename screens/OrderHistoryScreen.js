@@ -1,5 +1,5 @@
 import { ScrollView, Text, View, YStack } from "tamagui";
-import { getBillTicketsByEmail } from "../API";
+import { getBillTicketsByUid } from "../API";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ export const OrderHistoryScreen = ({navigation}) => {
 
     const { data: billTickets, isLoading } = useQuery({
         queryKey: ['allBillTickets'],
-        queryFn: () => getBillTicketsByEmail(currentUser.email)
+        queryFn: () => getBillTicketsByUid(currentUser.uid)
     });
 
     return (

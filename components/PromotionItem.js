@@ -25,7 +25,7 @@ export const PromotionItem = ({ promotion, navigation }) => {
             </Card.Header>
             <Card.Footer padded >
                 {promotion.used ?
-                    <Button onPress={handleUsePromotion} disabled color={"$color.red10Dark"}>Not Valid</Button>
+                    <Button disabled color={"$color.red10Dark"}>Not Valid</Button>
                     :
                     <Button onPress={handleUsePromotion} >Use</Button>
                 }

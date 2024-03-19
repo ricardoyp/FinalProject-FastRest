@@ -90,11 +90,13 @@ export const CartProvider = ({ children }) => {
             cart,
             totalPrice: totalPrice,
             promotion: promotionCart ? promotionCart : '',
+            uid: currentUser.uid
         };
         console.log('ORDER', order);
 
         if (tableNumber !== '') {
             createBillTicket(order);
+            console.log('PROMOTION', promotionCart);
             usePromotion(currentUser.uid, promotionCart.code);
             setPromotion('');
             setTotalPrice(0);

@@ -46,10 +46,10 @@ export const createBillTicket = async (data) => {
 
 }
 // GET BILL TICKETS
-export const getBillTicketsByEmail = async (email) => {
+export const getBillTicketsByUid = async (uid) => {
     try {
         const querySnapshot = await getDocs(collection(db, "BillTickets"));
-        const data = querySnapshot.docs.map((doc) => doc.data()).filter((ticket) => ticket.email === email)
+        const data = querySnapshot.docs.map((doc) => doc.data()).filter((ticket) => ticket.uid === uid)
         return data;
     } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -127,6 +127,21 @@ export const usePromotion = async (userUid, promotionCode) => {
     const filteredPromotions = promotions.map(promotion => {
         if (promotion.code === promotionCode) {
             return { ...promotion, used: true };
+        } else {
+            return promotion;
+        }
+    })
+
+    await updateDoc(userRef, { promotions: filteredPromotions });
+}
+// DELETE PROMOTION
+export const deletePromotion = async (userUid, promotionCode) => {
+    const userRef = doc(db, 'users', userUid);
+    const userSnap = await getDoc(userRef);
+    const promotions = userSnap.data().promotions;
+    const filteredPromotions = promotions.map(promotion => {
+        if (promotion.code === promotionCode) {
+            return { ...promotion, deleted: true };
         } else {
             return promotion;
         }
