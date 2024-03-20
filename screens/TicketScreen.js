@@ -8,6 +8,7 @@ import { Share } from '@tamagui/lucide-icons';
 export const TicketScreen = () => {
     const route = useRoute();
     const { ticket } = route.params;
+    console.log(ticket);
     let generatePDF = async (tick) => {
         const html = `
         <!DOCTYPE html>
@@ -67,7 +68,7 @@ export const TicketScreen = () => {
                 </tbody>
             </table>
             ${tick.promotion && `
-            <h3>Discount: -${tick.promotion.amount}€</h3>
+            <h3>Discount: -${tick.promotion.amount}${ticket.promotion.type === 'percentage' ? "%" : "€"}</h3>
             `}
             <h3>TOTAL: ${tick.totalPrice}</h3>
         </body>
@@ -98,7 +99,7 @@ export const TicketScreen = () => {
                                 <Text>Quantity: {itemTicket.quantity}</Text>
                             </Card.Header>
                             <Card.Footer padded>
-                                <Text>Total: {itemTicket.price * itemTicket.quantity}€</Text>
+                                <Text>Total: {itemTicket.price * itemTicket.quantity}{ticket.promotion.type === 'percentage' ? "%" : "€"}</Text>
                             </Card.Footer>
                         </Card>
                     ))}

@@ -10,6 +10,7 @@ export const CartProvider = ({ children }) => {
     const [tableNumber, setTableNumber] = useState('');
     const [promotionCart, setPromotion] = useState('');
     const [totalPrice, setTotalPrice] = useState(0);
+    const [numberOfItems, setNumberOfItems] = useState(0);
 
     const { currentUser } = useContext(AuthContext);
 
@@ -48,6 +49,7 @@ export const CartProvider = ({ children }) => {
         } else {
             setCartItems([...cartItems, { ...item, quantity: 1 }]);
         }
+        setNumberOfItems(numberOfItems + 1);
     };
 
     const removeFromCart = (item) => {
@@ -62,10 +64,13 @@ export const CartProvider = ({ children }) => {
         } else {
             setCartItems([...cartItems, { ...item, quantity: 1 }]);
         }
+        setNumberOfItems(numberOfItems - 1);
+
     };
 
     const clearCart = () => {
         setCartItems([]);
+        setNumberOfItems(0);
     };
 
     const confirmOrder = (cart) => {
@@ -107,11 +112,11 @@ export const CartProvider = ({ children }) => {
         }
     }
 
-
     const contextValue = {
         cartItems, totalPrice, addToCart, clearCart, removeFromCart, confirmOrder,
         tableNumber, setTableNumber,
-        promotionCart, setPromotion
+        promotionCart, setPromotion,
+        numberOfItems
     };
 
     return (

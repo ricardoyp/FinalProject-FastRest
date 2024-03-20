@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Image, Input, Text, View, YStack } from "tamagui";
+import { Button, Image, Input, ScrollView, Stack, Text, XStack, YStack } from "tamagui";
 import { SelectComponent } from "../components/Select";
 import { getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse, getIdsAppetizers } from "../API";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { updatePlate } from "../API";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../config/firebase";
 import { queryClient } from "../config/queryClient";
+import { CheckBoxAllergens } from "../components/CheckBox";
 
 export const AdminUpdatePlate = ({ navigation }) => {
     const [name, setName] = useState('');
@@ -15,6 +16,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
     const [price, setPrice] = useState('');
     const [image, setImage] = useState(null);
     const [uid, setUid] = useState('');
+    const [allergens, setAllergens] = useState([]);
 
     const [progress, setProgress] = useState(0);
 
@@ -74,6 +76,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
                         setPrice(plate.price);
                         setImage(plate.imageUrl);
                         setUid(plate.uid);
+                        setAllergens(plate.allergens);
                     }
                 }
                 );
@@ -86,6 +89,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
                         setPrice(plate.price);
                         setImage(plate.imageUrl);
                         setUid(plate.uid);
+                        setAllergens(plate.allergens);
                     }
                 }
                 );
@@ -98,6 +102,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
                         setPrice(plate.price);
                         setImage(plate.imageUrl);
                         setUid(plate.uid);
+                        setAllergens(plate.allergens);
                     }
                 }
                 );
@@ -137,6 +142,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
             price: Number(price),
             imageUrl: imageUrl,
             uid: uid,
+            allergens: allergens
         }
         mutateUpdate(plate);
         console.log('VAL:', val)
@@ -144,7 +150,6 @@ export const AdminUpdatePlate = ({ navigation }) => {
         console.log('UID:', uid)
         console.log('Plate:', plate);
         navigation.goBack();
-
     }
 
     const pickImageAsync = async () => {
@@ -200,7 +205,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
     }
 
     return (
-        <View>
+        <ScrollView>
             <YStack gap="3" padding="$4">
                 <Text fontSize={'$7'}>EDITAR PLATOS</Text>
                 <SelectComponent items={items} value={val} onValueChange={setVal} />
@@ -210,9 +215,24 @@ export const AdminUpdatePlate = ({ navigation }) => {
                 <Input placeholder="Price" value={price.toString()} onChangeText={(text) => { setPrice(text) }} />
                 <Button onPress={pickImageAsync} onValueChange={handleChange}> Select a Image </Button>
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                <Stack>
+                    <Text>Alérgenos:</Text>
+                    <XStack>
+                        <YStack flex={1}>
+                            <CheckBoxAllergens name="Gluten" setAllergens={setAllergens} allergens={allergens}/>
+                            <CheckBoxAllergens name="Huevo" setAllergens={setAllergens} allergens={allergens} />
+                            <CheckBoxAllergens name="Pescado" setAllergens={setAllergens} allergens={allergens} />
+                        </YStack>
+                        <YStack flex={1}>
+                            <CheckBoxAllergens name="Soja" setAllergens={setAllergens} allergens={allergens} />
+                            <CheckBoxAllergens name="Lactosa" setAllergens={setAllergens} allergens={allergens} />
+                            <CheckBoxAllergens name="Sulfitos" setAllergens={setAllergens} allergens={allergens} />
+                        </YStack>
+                    </XStack>
+                </Stack>
                 <Button bordered onPress={handleUpload}> Update Plate </Button>
             </YStack>
-        </View>
+        </ScrollView>
     );
 }
 

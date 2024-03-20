@@ -24,14 +24,20 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useColorScheme } from 'react-native'
 
 import { tamaguiConfig } from './tamagui.config'
-import { Notebook, Settings, ShoppingCart } from '@tamagui/lucide-icons';
+import { Notebook, Settings } from '@tamagui/lucide-icons';
 
 import { useContext, useEffect } from 'react';
 import { useFonts } from 'expo-font';
 
 import { AuthContext, AuthProvider } from './context/AuthContext';
-import { CartProvider } from './context/CartContext';
+import { CartContext, CartProvider } from './context/CartContext';
 import { queryClient } from './config/queryClient';
+import { ShoppingCart } from 'lucide-react-native';
+import { ShoppingCartIcon } from './components/ShoppingCartIcon';
+
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+// LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Tab = createBottomTabNavigator(); 
 
@@ -42,9 +48,11 @@ const ProfileStack = createNativeStackNavigator();
 
 const MenuStackScreen = ({ navigation }) => {
 
+const { numberOfItems } = useContext(CartContext)
+
   return (
     <MenuStack.Navigator>
-      <MenuStack.Screen name="Menu" component={MenuScreen} options={{ headerRight: () => (<ShoppingCart onPress={() => navigation.navigate('Shopping')} />) }} />
+      <MenuStack.Screen name="Menu" component={MenuScreen} options={{ headerRight: () => (<ShoppingCartIcon onPress={() => navigation.navigate('Shopping')} />) }} />
       <MenuStack.Screen name="Shopping" component={ShoppingScreen} />
       <MenuStack.Screen name="Scan" component={ScanModal} options={{ presentation: 'modal' }} />
     </MenuStack.Navigator>
