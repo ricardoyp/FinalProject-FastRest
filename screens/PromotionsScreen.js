@@ -44,7 +44,6 @@ export const PromotionsScreen = ({navigation}) => {
                     )}
                 </View>
             </ScrollView>
-            <Button onPress={() => getPromotions(currentUser.uid)}>Use</Button>
         </View>
     );
 }

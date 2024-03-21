@@ -16,7 +16,7 @@ export const CheckBoxAllergens = ({ name, setAllergens, allergens }) => {
 
     return (
         <XStack gap="$3" alignItems="center" >
-            <Checkbox id="unstyled"  onCheckedChange={handleChange} checked={isChecked}>
+            <Checkbox  onCheckedChange={handleChange} checked={isChecked}>
                 <Checkbox.Indicator>
                     <Check />
                 </Checkbox.Indicator>

@@ -74,6 +74,11 @@ export const AdminAddPlate = ({ navigation }) => {
     }
 
     const handleUpload = async () => {
+        if(!name || !description || !price || !image || !val) {
+            alert('Todos los campos son obligatorios');
+            return;
+        }
+
         const response = await fetch(image);
         const blob = await response.blob();
         const filename = image.split('/').pop();

@@ -31,6 +31,7 @@ export const SettingsScreen = ({ navigation }) => {
                 {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminAddPlate')}> ADMIN ADD </Button>}
                 {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminUpdatePlate')}> ADMIN UPDATE </Button>}
                 {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminDeletePlate')}> ADMIN DELETE </Button>}
+                {rol === 'admin' && <Button bordered onPress={() => navigation.navigate('AdminCreatePromotion')}> ADMIN PROMOTION </Button>}
                 <Button bordered onPress={() => navigation.navigate('Order')}> Order History </Button>
                 <Button bordered onPress={() => navigation.navigate('Promotions')}> Promotions </Button>
                 <Button bordered color={'$red11'} onPress={handleSignOut}> Sign Out </Button>

@@ -149,6 +149,9 @@ export const deletePromotion = async (userUid, promotionCode) => {
 
     await updateDoc(userRef, { promotions: filteredPromotions });
 }
+export const createPromotion = async (data) => {
+    await setDoc(doc(db, "Promotions", data.code), data);
+}
 
 
 // UPDATE PLATE

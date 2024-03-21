@@ -1,9 +1,9 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { useContext, useState } from 'react'
-import { Button, Input } from 'tamagui';
+import { Button, Input, Text, View } from 'tamagui';
 import { AuthContext } from '../context/AuthContext';
 
-export const LoginScreen = ({navigation}) => {
+export const LoginScreen = ({ navigation }) => {
     const { signIn, currentUser } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,15 +17,17 @@ export const LoginScreen = ({navigation}) => {
 
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
-            <View width={'75%'}>
+            <View width={'75%'} gap={'$2'}>
                 <Text style={styles.text}>Login</Text>
                 <Input placeholder='Email' value={email} onChangeText={(text) => setEmail(text)} />
-                <Input placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
+                <Input secureTextEntry placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
             </View>
-            <Button onPress={ () => handleLogin(email, password)} width={'50%'}>Login</Button>
-            <Button onPress={() => navigation.navigate('SignUp')}>Signup</Button>
+            <View width={'50%'} gap={'$3'}>
+                <Button onPress={() => handleLogin(email, password)} >Login</Button>
+                <Button size={'$3'} alignSelf='flex-end' onPress={() => navigation.navigate('SignUp')}>Signup</Button>
+            </View>
         </KeyboardAvoidingView>
-        
+
     );
 };
 
@@ -37,11 +39,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF', // Light gray background
         paddingHorizontal: 20, // Padding on both sides
         paddingTop: 50, // Padding at the top
+        gap: 10,
     },
     text: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 10, // Margin below text
     },
     textInput: {
         height: 40,

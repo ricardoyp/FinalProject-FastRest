@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../config/firebase';
@@ -33,9 +33,9 @@ export const SignupAdminScreen = ({ navigation }) => {
                 displayName: userCredential.user.displayName,
                 email: userCredential.user.email,
                 rol: "admin",
-            }            
+            }
 
-            await createUser( user, user.uid);
+            await createUser(user, user.uid);
 
             console.log('Usuario registrado con éxito:', userCredential.user);
         } catch (error) {
@@ -53,11 +53,13 @@ export const SignupAdminScreen = ({ navigation }) => {
                 <Input secureTextEntry placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
                 <Input placeholder='···ADMINCODE···' value={adminCode} onChangeText={(text) => setAdminCode(text)} />
             </Stack>
-            <Stack width={'50%'} gap={'$2'}>
+            <Stack width={'50%'} gap={'$3'}>
                 <Button onPress={handleSignUp}>SignUp</Button>
-                <Button onPress={() => navigation.navigate('Login')}>Login</Button>
-                <Button unstyled onPress={() => navigation.navigate('SignUp')}>I'm Client</Button>
+                <Button size={'$3'} alignSelf='flex-end' onPress={() => navigation.navigate('Login')}>Login</Button>
             </Stack>
+            <View alignSelf='flex-start' paddingLeft={'$10'}>
+                <Button unstyled onPress={() => navigation.navigate('SignUp')}>I'm Client</Button>
+            </View>
         </KeyboardAvoidingView>
     );
 };
@@ -70,10 +72,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF', // Light gray background
         paddingHorizontal: 20, // Padding on both sides
         paddingTop: 50, // Padding at the top
+        gap: 10,
     },
     text: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 10, // Margin below text
     }
 });

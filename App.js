@@ -1,4 +1,4 @@
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -32,12 +32,12 @@ import { useFonts } from 'expo-font';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import { CartContext, CartProvider } from './context/CartContext';
 import { queryClient } from './config/queryClient';
-import { ShoppingCart } from 'lucide-react-native';
 import { ShoppingCartIcon } from './components/ShoppingCartIcon';
+import { AdminCreatePromotion } from './screens/AdminCreatePromotion';
 
-// import { LogBox } from 'react-native';
-// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-// LogBox.ignoreAllLogs();//Ignore all log notifications
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const Tab = createBottomTabNavigator(); 
 
@@ -78,6 +78,7 @@ const SettingsStackScreen = ({ navigation }) => {
       <SettingsStack.Screen name="AdminAddPlate" component={AdminAddPlate} />
       <SettingsStack.Screen name="AdminUpdatePlate" component={AdminUpdatePlate} />
       <SettingsStack.Screen name="AdminDeletePlate" component={AdminDeletePlate} />
+      <SettingsStack.Screen name="AdminCreatePromotion" component={AdminCreatePromotion} />
     </SettingsStack.Navigator>
   );
 }
