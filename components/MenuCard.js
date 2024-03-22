@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Card, Image, Paragraph, Button, XStack, Text, View, Stack } from 'tamagui';
+import { Card, Image, Paragraph, Button, XStack, Text, View, Stack, H3 } from 'tamagui';
 import { CartContext } from '../context/CartContext';
 
 export const MenuCard = ({ item }) => {
@@ -8,9 +8,9 @@ export const MenuCard = ({ item }) => {
 
     return (
         <Stack>
-            <Card key={item.id} bordered width='100%' height={200} backgroundColor={'$black05'} borderRadius={30}>
-                <Card.Header padded height={"50%"}>
-                    <Text fontSize={'$8'} color='white'>{item.name}</Text>
+            <Card key={item.id} bordered backgroundColor={'$black05'} borderRadius={30}>
+                <Card.Header>
+                    <H3 color='white'>{item.name}</H3>
                     <Paragraph color={'white'}>{item.description}</Paragraph>
                 </Card.Header>
                 <Card.Footer padded>
@@ -34,7 +34,7 @@ export const MenuCard = ({ item }) => {
                             opacity: 0.6, // Adjust opacity for desired darkness
                         }}
                     />
-                </Card.Background>
+                </Card.Background> 
             </Card>
         </Stack>
     );

@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { useContext, useState } from 'react'
-import { Button, Input, Text, View } from 'tamagui';
+import { Button, H2, H3, Input, View } from 'tamagui';
 import { AuthContext } from '../context/AuthContext';
 
 export const LoginScreen = ({ navigation }) => {
@@ -18,7 +18,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <View width={'75%'} gap={'$2'}>
-                <Text style={styles.text}>Login</Text>
+                <H2>Login</H2>
                 <Input placeholder='Email' value={email} onChangeText={(text) => setEmail(text)} />
                 <Input secureTextEntry placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
             </View>
@@ -40,18 +40,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20, // Padding on both sides
         paddingTop: 50, // Padding at the top
         gap: 10,
-    },
-    text: {
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-    textInput: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 20, // Margin below input
-        paddingHorizontal: 10,
-        width: 250,
     },
 });

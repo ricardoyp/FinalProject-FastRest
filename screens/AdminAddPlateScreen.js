@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Image, Input, ScrollView, Stack, Text, YStack } from "tamagui";
+import { Button, Image, Input, ScrollView, Spinner, Stack, Text, YStack } from "tamagui";
 import { SelectComponent } from "../components/Select";
 import { addDataAppetizers, addDataDessert, addDataDrinks, addDataMainPlates } from "../API";
 import { launchImageLibraryAsync } from 'expo-image-picker';
@@ -74,8 +74,8 @@ export const AdminAddPlate = ({ navigation }) => {
     }
 
     const handleUpload = async () => {
-        if(!name || !description || !price || !image || !val) {
-            alert('Todos los campos son obligatorios');
+        if (!name || !description || !price || !image || !val) {
+            alert('Todos los campos son obligatorios, excepto los alérgenos.');
             return;
         }
 
@@ -122,7 +122,7 @@ export const AdminAddPlate = ({ navigation }) => {
         );
     }
 
-    const { mutate: mutateCreate, isPending } = useMutation({
+    const { mutate: mutateCreate } = useMutation({
         mutationKey: ['mutateCreate'],
         mutationFn: (url) => createPlate(url),
         onSuccess: () => {
@@ -134,33 +134,42 @@ export const AdminAddPlate = ({ navigation }) => {
     });
 
     return (
-        <ScrollView>
-            <YStack gap="3" padding="$4">
-                <Text fontSize={'$7'}>AÑADIR PLATOS</Text>
-                <SelectComponent items={items} value={val} onValueChange={setVal} />
-                <Input placeholder="Name" onChangeText={(text) => { setName(text) }} />
-                <Input placeholder="Description" onChangeText={(text) => { setDescription(text) }} />
-                <Input placeholder="Price" onChangeText={(text) => { setPrice(text) }} />
-                <Button onPress={pickImageAsync} onValueChange={handleChange}> Select a Image </Button>
-                {image && <Image source={{ uri: image }} style={{ width: 'auto', height: 200 }} />}
-                <Stack>
-                    <Text>Alérgenos:</Text>
-                    <XStack>
-                        <YStack flex={1}>
-                            <CheckBoxAllergens name="Gluten" setAllergens={setAllergens} allergens={allergens}/>
-                            <CheckBoxAllergens name="Huevo" setAllergens={setAllergens} allergens={allergens} />
-                            <CheckBoxAllergens name="Pescado" setAllergens={setAllergens} allergens={allergens} />
-                        </YStack>
-                        <YStack flex={1}>
-                            <CheckBoxAllergens name="Soja" setAllergens={setAllergens} allergens={allergens} />
-                            <CheckBoxAllergens name="Lactosa" setAllergens={setAllergens} allergens={allergens} />
-                            <CheckBoxAllergens name="Sulfitos" setAllergens={setAllergens} allergens={allergens} />
-                        </YStack>
-                    </XStack>
+        <>
+            {progress > 0 ?
+                <Stack justifyContent="center" alignItems="center" style={{ flex: 1 }}>
+                    <Spinner size="large" color="$blue10Light" />
                 </Stack>
-                <Button bordered onPress={handleUpload}> Add </Button>
-            </YStack>
-        </ScrollView>
+                :
+                <ScrollView>
+                    <YStack gap="3" padding="$4">
+                        <Text fontSize={'$7'}>AÑADIR PLATOS</Text>
+                        <SelectComponent items={items} value={val} onValueChange={setVal} />
+                        <Input placeholder="Name" onChangeText={(text) => { setName(text) }} />
+                        <Input placeholder="Description" onChangeText={(text) => { setDescription(text) }} />
+                        <Input placeholder="Price" onChangeText={(text) => { setPrice(text) }} />
+                        <Button onPress={pickImageAsync} onValueChange={handleChange}> Select a Image </Button>
+                        {image && <Image source={{ uri: image }} style={{ width: 'auto', height: 200 }} />}
+                        <Stack>
+                            <Text>Alérgenos:</Text>
+                            <XStack>
+                                <YStack flex={1}>
+                                    <CheckBoxAllergens name="Gluten" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Huevo" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Pescado" setAllergens={setAllergens} allergens={allergens} />
+                                </YStack>
+                                <YStack flex={1}>
+                                    <CheckBoxAllergens name="Soja" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Lactosa" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Sulfitos" setAllergens={setAllergens} allergens={allergens} />
+                                </YStack>
+                            </XStack>
+                        </Stack>
+                        <Button bordered onPress={handleUpload}> Add </Button>
+                    </YStack>
+                </ScrollView>
+            }
+        </>
+
     );
 }
 

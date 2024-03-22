@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Image, Input, ScrollView, Stack, Text, XStack, YStack } from "tamagui";
+import { Button, Image, Input, ScrollView, Spinner, Stack, Text, XStack, YStack } from "tamagui";
 import { SelectComponent } from "../components/Select";
 import { getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse, getIdsAppetizers } from "../API";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -58,7 +58,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
                 platesObjects = desserts?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
                 break;
-            case 'Drinks': 
+            case 'Drinks':
                 platesObjects = drinks?.map((plate) => ({ name: plate.name }));
                 setSubitems(platesObjects);
             default:
@@ -124,7 +124,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
         }
     }, [subval]);
 
-    const { mutate: mutateUpdate, isPending } = useMutation({
+    const { mutate: mutateUpdate } = useMutation({
         mutationKey: ['mutationUpdate'],
         mutationFn: (plate) => updatePlate(val, uid, plate),
         onSuccess: () => {
@@ -176,7 +176,7 @@ export const AdminUpdatePlate = ({ navigation }) => {
 
     const handleUpload = async () => {
         if (!name || !description || !price || !image || !val) {
-            alert('Todos los campos son obligatorios');
+            alert('Todos los campos son obligatorios, excepto los alérgenos.');
             return;
         }
         const response = await fetch(image);
@@ -209,34 +209,45 @@ export const AdminUpdatePlate = ({ navigation }) => {
     }
 
     return (
-        <ScrollView>
-            <YStack gap="3" padding="$4">
-                <Text fontSize={'$7'}>EDITAR PLATOS</Text>
-                <SelectComponent items={items} value={val} onValueChange={setVal} />
-                <SelectComponent items={subitems} value={subval} onValueChange={setSubval} />
-                <Input placeholder="Name" value={name} onChangeText={(text) => { setName(text) }} />
-                <Input placeholder="Description" value={description} onChangeText={(text) => { setDescription(text) }} />
-                <Input placeholder="Price" value={price.toString()} onChangeText={(text) => { setPrice(text) }} />
-                <Button onPress={pickImageAsync} onValueChange={handleChange}> Select a Image </Button>
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-                <Stack>
-                    <Text>Alérgenos:</Text>
-                    <XStack>
-                        <YStack flex={1}>
-                            <CheckBoxAllergens name="Gluten" setAllergens={setAllergens} allergens={allergens}/>
-                            <CheckBoxAllergens name="Huevo" setAllergens={setAllergens} allergens={allergens} />
-                            <CheckBoxAllergens name="Pescado" setAllergens={setAllergens} allergens={allergens} />
-                        </YStack>
-                        <YStack flex={1}>
-                            <CheckBoxAllergens name="Soja" setAllergens={setAllergens} allergens={allergens} />
-                            <CheckBoxAllergens name="Lactosa" setAllergens={setAllergens} allergens={allergens} />
-                            <CheckBoxAllergens name="Sulfitos" setAllergens={setAllergens} allergens={allergens} />
-                        </YStack>
-                    </XStack>
+        <>
+            {progress > 0 ?
+                <Stack justifyContent="center" alignItems="center" style={{ flex: 1 }}>
+                    <Spinner size="large" color="$blue10Light" />
                 </Stack>
-                <Button bordered onPress={handleUpload}> Update Plate </Button>
-            </YStack>
-        </ScrollView>
+                :
+                <ScrollView>
+                    <YStack gap="3" padding="$4">
+                        <Text fontSize={'$7'}>EDITAR PLATOS</Text>
+                        <SelectComponent items={items} value={val} onValueChange={setVal} />
+                        <SelectComponent items={subitems} value={subval} onValueChange={setSubval} />
+                        <Input placeholder="Name" value={name} onChangeText={(text) => { setName(text) }} />
+                        <Input placeholder="Description" value={description} onChangeText={(text) => { setDescription(text) }} />
+                        <Input placeholder="Price" value={price.toString()} onChangeText={(text) => { setPrice(text) }} />
+                        <Button onPress={pickImageAsync} onValueChange={handleChange}> Select a Image </Button>
+                        {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                        <Stack>
+                            <Text>Alérgenos:</Text>
+                            <XStack>
+                                <YStack flex={1}>
+                                    <CheckBoxAllergens name="Gluten" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Huevo" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Pescado" setAllergens={setAllergens} allergens={allergens} />
+                                </YStack>
+                                <YStack flex={1}>
+                                    <CheckBoxAllergens name="Soja" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Lactosa" setAllergens={setAllergens} allergens={allergens} />
+                                    <CheckBoxAllergens name="Sulfitos" setAllergens={setAllergens} allergens={allergens} />
+                                </YStack>
+                            </XStack>
+                        </Stack>
+                        <Button bordered onPress={handleUpload}> Update Plate </Button>
+                    </YStack>
+                </ScrollView>
+            }
+        </>
+
+
+
     );
 }
 

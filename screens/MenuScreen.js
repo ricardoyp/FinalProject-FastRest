@@ -1,6 +1,6 @@
 import { getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse } from "../API";
 import { useQuery } from "@tanstack/react-query";
-import { AnimatePresence, Button, H1, H2, H5, Input, ScrollView, SizableText, Stack, Tabs, Text, XStack, YStack, styled } from "tamagui";
+import { AnimatePresence, Button, H1, H2, H3, H4, H5, Input, ScrollView, SizableText, Stack, Tabs, Text, XStack, YStack, styled } from "tamagui";
 import { Scan } from "@tamagui/lucide-icons";
 import { MenuCard } from "../components/MenuCard";
 import { SelectComponent } from "../components/Select";
@@ -31,22 +31,22 @@ export const MenuScreen = ({ navigation }) => {
 
 export const TabsMenu = ({ navigation, filter }) => {
 
-    const { data: appetizers } = useQuery({
+    const { data: appetizers, isLoading: isLoadingAppetizers } = useQuery({
         queryKey: ['allAppetizers'],
         queryFn: getCollectionAppetizers,
     });
 
-    const { data: maincourse } = useQuery({
+    const { data: maincourse, isLoading: isLoadingMainCourse } = useQuery({
         queryKey: ['allMaincourse'],
         queryFn: getCollectionMainCourse
     });
 
-    const { data: desserts } = useQuery({
+    const { data: desserts, isLoading: isLoadingDesserts } = useQuery({
         queryKey: ['allDesserts'],
         queryFn: getCollectionDesserts
     });
 
-    const { data: drinks } = useQuery({
+    const { data: drinks, isLoading: isLoadingDrinks } = useQuery({
         queryKey: ['allDrinks'],
         queryFn: getCollectionDrinks
     });
@@ -85,13 +85,13 @@ export const TabsMenu = ({ navigation, filter }) => {
 
     const TabsContent = [
         <>
-            <H2 paddingLeft='$3'>Appetizers</H2>
+            <H2 paddingLeft='$3' paddingBottom='$2'>Appetizers</H2>
             <Stack paddingHorizontal='$3' gap='$3' width={'100%'}>
                 {appetizers?.filter(item => !item.allergens.includes(filter)).map((item, index) => (
                     <MenuCard key={index} item={item} />
                 ))}
             </Stack>
-            <H2 paddingLeft='$3'>Main courses</H2>
+            <H2 paddingLeft='$3' paddingBottom='$2'>Main courses</H2>
             <Stack paddingHorizontal='$3' gap='$3' width={'100%'}>
                 {maincourse?.filter(item => !item.allergens.includes(filter)).map((item, index) => (
                     <MenuCard key={index} item={item} />
@@ -99,7 +99,7 @@ export const TabsMenu = ({ navigation, filter }) => {
             </Stack>
         </>,
         <>
-            <H2 paddingLeft='$3'>Drinks</H2>
+            <H2 paddingLeft='$3' paddingBottom='$2'>Drinks</H2>
             <Stack paddingHorizontal='$3' gap='$3' width={'100%'}>
                 {drinks?.map((item, index) => (
                     <MenuCard key={index} item={item} />
@@ -107,7 +107,7 @@ export const TabsMenu = ({ navigation, filter }) => {
             </Stack>
         </>,
         <>
-            <H2 paddingLeft='$3'>Desserts</H2>
+            <H2 paddingLeft='$3' paddingBottom='$2'>Desserts</H2>
             <Stack paddingHorizontal='$3' gap='$3' width={'100%'}>
                 {desserts?.filter(item => !item.allergens.includes(filter)).map((item, index) => (
                     <MenuCard key={index} item={item} />
@@ -126,7 +126,7 @@ export const TabsMenu = ({ navigation, filter }) => {
                 <AnimatePresence>
                     {intentAt && (
                         <TabsRovingIndicator
-                            borderRadius="$4"
+                            borderRadius="$6"
                             width={intentAt.width}
                             height={intentAt.height}
                             x={intentAt.x}
@@ -137,7 +137,7 @@ export const TabsMenu = ({ navigation, filter }) => {
                 <AnimatePresence>
                     {activeAt && (
                         <TabsRovingIndicator
-                            borderRadius="$4"
+                            borderRadius="$6"
                             theme="active"
                             width={activeAt.width}
                             height={activeAt.height}
@@ -150,7 +150,7 @@ export const TabsMenu = ({ navigation, filter }) => {
                 <Tabs.List
                     backgroundColor="transparent"
                     justifyContent="space-evenly"
-                    paddingVertical="$3"
+                    paddingVertical="$2"
                 >
                     <Tabs.Tab
                         unstyled
@@ -159,7 +159,7 @@ export const TabsMenu = ({ navigation, filter }) => {
                         value={0}
                         onInteraction={handleOnInteraction}
                     >
-                        <Text fontSize={'$7'}>Food</Text>
+                        <H5>Food</H5>
                     </Tabs.Tab>
                     <Tabs.Tab
                         unstyled
@@ -168,7 +168,7 @@ export const TabsMenu = ({ navigation, filter }) => {
                         value={1}
                         onInteraction={handleOnInteraction}
                     >
-                        <Text fontSize={'$7'}>Drinks</Text>
+                        <H5>Drinks</H5>
                     </Tabs.Tab>
                     <Tabs.Tab
                         unstyled
@@ -177,7 +177,7 @@ export const TabsMenu = ({ navigation, filter }) => {
                         value={2}
                         onInteraction={handleOnInteraction}
                     >
-                        <Text fontSize={'$7'}>Desserts</Text>
+                        <H5>Desserts</H5>
                     </Tabs.Tab>
                 </Tabs.List>
             </YStack>
@@ -195,6 +195,8 @@ export const TabsMenu = ({ navigation, filter }) => {
             </AnimatePresence>
         </Tabs>
     )
+
+
 }
 
 
@@ -203,7 +205,7 @@ const TabsRovingIndicator = ({ active, ...props }) => {
         <YStack
             position="absolute"
             backgroundColor="$colorHover"
-            opacity={0.3}
+            opacity={0.2}
             animation="100ms"
             enterStyle={{
                 opacity: 0,
@@ -213,7 +215,7 @@ const TabsRovingIndicator = ({ active, ...props }) => {
             }}
             {...(active && {
                 backgroundColor: '$color8',
-                opacity: 0.6,
+                opacity: 0.7,
             })}
             {...props}
         />

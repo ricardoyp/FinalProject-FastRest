@@ -1,15 +1,17 @@
-import { Button, View, YStack } from "tamagui"
+import { Button, Spinner, Stack, View, YStack } from "tamagui"
 import { SelectComponent } from "../components/Select"
 import { useEffect, useState } from "react"
 import { deletePlate, getCollectionAppetizers, getCollectionDesserts, getCollectionDrinks, getCollectionMainCourse } from "../API"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { queryClient } from "../config/queryClient"
+import { MenuCard } from "../components/MenuCard"
 
-export const AdminDeletePlate = ({navigation}) => {
+export const AdminDeletePlate = ({ navigation }) => {
     const [val, setVal] = useState('')
     const [subval, setSubval] = useState('')
     const [subitems, setSubitems] = useState([])
     const [uid, setUid] = useState('')
+    const [plate, setPlate] = useState()
 
     const { data: appetizers } = useQuery({
         queryKey: ['allAppetizers'],
@@ -60,25 +62,29 @@ export const AdminDeletePlate = ({navigation}) => {
             case 'Appetizers':
                 const appetizer = appetizers?.find(appetizer => appetizer.name === subval);
                 setUid(appetizer.uid);
+                setPlate(appetizer);
                 break;
             case 'MainCourse':
                 const mainCourse = mainCourses?.find(mainCourse => mainCourse.name === subval);
                 setUid(mainCourse.uid);
+                setPlate(mainCourse);
                 break;
             case 'Desserts':
                 const dessert = desserts?.find(dessert => dessert.name === subval);
                 setUid(dessert.uid);
+                setPlate(dessert);
                 break;
             case 'Drinks':
                 const drink = drinks?.find(drink => drink.name === subval);
                 setUid(drink.uid);
+                setPlate(drink);
                 break;
             default:
                 break;
         }
     }, [subval]);
 
-    const { mutate: mutateDelete } = useMutation({
+    const { mutate: mutateDelete, isPending } = useMutation({
         mutationKey: ['mutateDelete'],
         mutationFn: () => deletePlate(val, uid),
         onSuccess: () => {
@@ -95,14 +101,24 @@ export const AdminDeletePlate = ({navigation}) => {
         mutateDelete();
     }
 
+
     return (
-        <View>
-            <YStack gap="3" padding="$4">
-                <SelectComponent items={items} value={val} onValueChange={setVal} />
-                <SelectComponent items={subitems} value={subval} onValueChange={setSubval} />
-                <Button onPress={handleDelete}>Delete Plate</Button>
-            </YStack>
-        </View>
+        <>
+            {isPending ?
+                <Stack justifyContent="center" alignItems="center" style={{ flex: 1 }}>
+                    <Spinner size="large" color="$blue10Light" />
+                </Stack>
+                :
+                <View>
+                    <YStack gap="3" padding="$4">
+                        <SelectComponent items={items} value={val} onValueChange={setVal} />
+                        <SelectComponent items={subitems} value={subval} onValueChange={setSubval} />
+                        {plate && <MenuCard item={plate} />}
+                        <Button onPress={handleDelete}>Delete Plate</Button>
+                    </YStack>
+                </View>
+            }
+        </>
     )
 }
 

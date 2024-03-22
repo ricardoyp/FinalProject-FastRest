@@ -4,9 +4,13 @@ import { CartContext } from "../context/CartContext";
 import { CartItem } from "../components/CartItem";
 import { Trash2 } from "lucide-react-native";
 
-export const ShoppingScreen = () => {
+export const ShoppingScreen = ({navigation}) => {
     const { cartItems, totalPrice, confirmOrder, clearCart, promotionCart, setPromotion, tableNumber, setTableNumber } = useContext(CartContext);
 
+    const handleconfirOrder = () => {
+        confirmOrder(cartItems);
+        navigation.goBack();
+    }
     return (
         <Stack padding={'$1'} flex={1}>
             <View gap="3" padding="$2">
@@ -14,7 +18,7 @@ export const ShoppingScreen = () => {
                     <Input disabled size={"$5"} flex={1}>
                         🍽️ Table: {tableNumber ? tableNumber : "No Yet"}
                     </Input>
-                    <Input type="number" size={"$5"} placeholder="Table Number" onChangeText={(text) => setTableNumber(text)} />
+                    <Input type="number" size={"$5"} value={tableNumber} placeholder="Table Number" onChangeText={(text) => setTableNumber(text)} />
                 </View>
                 {promotionCart &&
                     <View flexDirection="row" width={'100%'}>
@@ -34,7 +38,7 @@ export const ShoppingScreen = () => {
                 <Text fontSize={"$8"}>Total: {cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)}€</Text>
                 {promotionCart && <Text fontSize={"$6"}>Discount: {promotionCart.amount}{promotionCart.type === "percentage" ? "%" : "€"} </Text>}
                 {promotionCart && <Text fontSize={"$6"}>Total to pay: {totalPrice}€</Text>}
-                <Button onPress={() => confirmOrder(cartItems)}>Confirm Order</Button>
+                <Button onPress={handleconfirOrder}>Confirm Order</Button>
                 <Button onPress={() => clearCart()}>Clear Cart</Button>
             </YStack>
         </Stack>

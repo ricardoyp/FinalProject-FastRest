@@ -2,7 +2,7 @@ import { KeyboardAvoidingView, StyleSheet, Text } from 'react-native'
 import React, { useState } from 'react'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../config/firebase';
-import { Button, Input, Stack, View } from 'tamagui';
+import { Button, H2, Input, Stack, View } from 'tamagui';
 import { createUser } from '../API';
 
 export const SignupScreen = ({ navigation }) => {
@@ -42,7 +42,7 @@ export const SignupScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <Stack width={'75%'} gap={'$2'}>
-                <Text style={styles.text}>SignUp</Text>
+            <H2>SignUp</H2>
                 <Input placeholder='Name' value={name} onChangeText={(text) => setName(text)} />
                 <Input placeholder='Email' value={email} onChangeText={(text) => setEmail(text)} />
                 <Input secureTextEntry placeholder='Password' value={password} onChangeText={(text) => setPassword(text)} />
@@ -69,8 +69,4 @@ const styles = StyleSheet.create({
         paddingTop: 50, // Padding at the top
         gap: 10,
     },
-    text: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    }
 });
