@@ -29,7 +29,7 @@ export const SignupScreen = ({ navigation }) => {
                 email: userCredential.user.email,
                 rol: "client",
             }
-
+            
             await createUser(user, user.uid);
 
             console.log('Usuario registrado con éxito:', userCredential.user);
