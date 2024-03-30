@@ -16,7 +16,7 @@ Antes de comenzar, asegúrate de tener instalado Node.js y npm en tu sistema.
 
 1. Clona este repositorio en tu máquina local:
 ```bash
-git clone 
+git clone git@github.com:ricardoyp/FinalProject-FastRest.git
 ```
 
 2. Navega al directorio del proyecto:
