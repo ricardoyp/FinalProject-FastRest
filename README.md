@@ -4,11 +4,31 @@ FastRestaurant es una aplicación móvil creada con React Native que simplifica 
 
 **¡Atención!** El método de pago no esta configurado
 
-### Características
+## ¿Cómo funciona FastRest?
 
-- **Registro de Usuarios:** Los usuarios pueden registrarse fácilmente en la aplicación proporcionando información básica.
-- **Escaneo de Código QR:** Al llegar al restaurante, los usuarios pueden escanear el código QR ubicado en su mesa para asociarla con su cuenta.
-- **Orden de Comida y Bebida:** Una vez asociada la mesa, los usuarios pueden realizar pedidos de comida y bebida desde la aplicación.
+### Modo cliente:
+Los clientes escanean el código QR de su mesa para aplicar una mesa para sus comandas.
+Pueden crear comandas, añadir o eliminar platos, y aplicar promociones disponibles.
+![IMG_0079](https://github.com/ricardoyp/FinalProject-FastRest/assets/145460649/a145c90e-a738-4429-a69a-6cd0082f7097)
+
+### Modo administrador:
+Los administradores del restaurante pueden acceder a un panel de control para gestionar el menú.
+Se pueden realizar funciones CRUD (Crear, Leer, Actualizar y Eliminar) para los platos, precios y descripciones.
+Además, es posible crear y configurar promociones para los clientes.
+![IMG_0080](https://github.com/ricardoyp/FinalProject-FastRest/assets/145460649/8b5645f7-77df-4d7f-b12f-803cc8fba8c5)
+
+
+## Beneficios de FastRest:
+
+### Para los clientes:
+Reduce el tiempo de espera para realizar pedidos.
+Permite una experiencia más cómoda y personalizada.
+Ofrece acceso a información actualizada del menú y promociones.
+
+### Para los restaurantes:
+Agiliza el proceso de toma de comandas y reduce errores.
+Mejora la eficiencia del servicio y la rotación de mesas.
+Permite fidelizar a los clientes a través de promociones personalizadas.
 
 ## Configuración
 
