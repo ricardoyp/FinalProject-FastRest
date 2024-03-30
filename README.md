@@ -34,9 +34,9 @@ npm i
 Este proyecto utiliza Firebase para el backend. Asegúrate de tener una cuenta de Firebase y haber creado un proyecto.
 
 1. Genera las credenciales creando un nuevo proyecto en la consola de firebase.
-  1.1. Accede a Firestore Database y configuralo
-  1.2. Accede a Authentication, seleccionando corrreo electronico + contraseña.
-  1.3. Accede a Storage y configuralo
+  - Accede a Firestore Database y configuralo
+  - Accede a Authentication, seleccionando corrreo electronico + contraseña.
+  - Accede a Storage y configuralo
 
 2. Crea un archivo `.env` en la raíz del proyecto.
 
@@ -63,5 +63,8 @@ Una vez que hayas configurado las variables de entorno, puedes ejecutar el proye
 npm run start
 ```
 Scan QR with Expo Go app mobile
+
+Para comenzar a usar la aplicación, deberas tener platos en la carta para poder añadirlos al carrito
+Crea una nueva cuenta administror con el codigo que definiste anteriormente (EXPO_PUBLIC_ADMIN_CODE)
 
 
