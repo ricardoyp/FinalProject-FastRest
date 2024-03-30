@@ -33,13 +33,17 @@ npm i
 
 Este proyecto utiliza Firebase para el backend. Asegúrate de tener una cuenta de Firebase y haber creado un proyecto.
 
-1. Crea un archivo `.env` en la raíz del proyecto.
+1. Genera las credenciales creando un nuevo proyecto en la consola de firebase.
+  1.1. Accede a Firestore Database y configuralo
+  1.2. Accede a Authentication, seleccionando corrreo electronico + contraseña.
+  1.3. Accede a Storage y configuralo
 
-2. Copia y pega las credenciales de tu proyecto de Firebase en el archivo `.env` en el siguiente formato:
+2. Crea un archivo `.env` en la raíz del proyecto.
+
+3. Copia y pega las credenciales de tu proyecto de Firebase en el archivo `.env` en el siguiente formato:
 ```
 EXPO_PUBLIC_FIREBASE_API_KEY = 
 EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN = 
-EXPO_PUBLIC_FIREBASE_DATABASE_URL = 
 EXPO_PUBLIC_FIREBASE_PROJECT_ID = 
 EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET = 
 EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = 
